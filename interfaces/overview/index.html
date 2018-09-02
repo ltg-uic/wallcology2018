@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<!-- Your interface name here-->
+	<title></title>
+	<!-- The description of this interfaces here -->
+	<meta name="description" content="">
+	<script src="webfont.js"></script>
+	<!-- Your CSS here -->
+</head>
+<body>
+	<button id="back" value="Back" onClick="back();">Back</button>
+	<button align=right id="next" value="Next" onClick="next();">Next</button><br>
+	<img src="Slide1.jpg" height="80%" id="page"><br>
+	<script>
+	var index=1;
+	function next() {
+		if (index < 9) index++;
+		document.getElementById('page').src='Slide' + index + '.jpg';
+	}
+	function back() {
+		if (index > 1) index--;
+		document.getElementById('page').src='Slide' + index + '.jpg';
+	}
+	</script>
+</body>				
+</html>

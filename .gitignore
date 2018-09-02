@@ -1,0 +1,25 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+# IntelliJ
+.DS_Store
+.idea/
+*.iml
+interfaces/wallscope-interface/.DS_Store
+node_modules/*
+
+interfaces/wallscope-interface/wallcology-visualization/unity
+interfaces/wallscope-interface/wallcology-visualization/unity/*
+interfaces/imageUpload
+interfaces/ecosystem-history2.0
+
+unity/
+unity/*
+interfaces/ecosystem-history/thermometer.png
+
+roomcast-log.txt
