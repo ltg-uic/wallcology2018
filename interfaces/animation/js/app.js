@@ -20,11 +20,12 @@ var nutella,
     unity3d,
     WallscopeID;
 
+
 /*==============================================================================
  #                             START OF MAIN
  #=============================================================================*/
 
-function Start() {
+function Start() {     
 
     // instantiate the Nutella components
     initNutellaComponents();
@@ -44,7 +45,11 @@ function initNutellaComponents() {
     // Parse the query parameters
     var query_parameters = NUTELLA.parseURLParameters();
     console.log(query_parameters);
-    WallscopeID = query_parameters.INSTANCE || 0;
+    // WallscopeID = query_parameters.INSTANCE || 0;
+
+    WallscopeID = top.instance.name; //this is a horrible hack 
+    if (isNaN(WallscopeID)) WallscopeID = 0; else WallscopeID--;
+
 
     console.log('wallscope: ' + WallscopeID)
 
@@ -79,6 +84,7 @@ function initWebPlayer() {
 
     console.log("Start WebPlayer");
     jQuery(function() {
+
 
         var $missingScreen = jQuery("#unityPlayer").find(".missing");
         var $brokenScreen = jQuery("#unityPlayer").find(".broken");
@@ -319,16 +325,19 @@ var Unity = {
     SetThermostatText: function(thermo) {
         thermo = thermo.toString();
         console.log("Thermostat is", thermo);
-        unity3d.getUnity().SendMessage("Thermostat", "SetText", thermo);
+        // unity3d.getUnity().SendMessage("Thermostat", "SetText", thermo);
+        unity3d.getUnity().SendMessage("Thermostat", "SetText", '');
     },
 
     // Sets the Temperature GUI Text display
     SetTemperatureText: function(temp) {
         // temp = Math.abs(Math.round(temp * 100) / 100);
-        temp = temp.toString() + "˚C";
+        // temp = temp.toString() + "˚C";
+        temp = temp.toString() + "";
         // temp = "";
         console.log("Temperature is", temp);
-        unity3d.getUnity().SendMessage("Temperature", "SetText", temp);
+        // unity3d.getUnity().SendMessage("Temperature", "SetText", 'temp');
+        unity3d.getUnity().SendMessage("Temperature", "SetText", '');
     },
 
     // Sets the Ecosystem GUI Text display

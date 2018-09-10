@@ -16,7 +16,7 @@ history.load(function(){
   };
 
 
-  nutella.net.subscribe('seed',function(message, from) {
+  nutella.net.subscribe('seed',function(message, from) { 
     var d = new Date();
     var timestamp=  d.getTime();
     history.ecosystem[message.ecosystem].push({timestamp: timestamp, action:'seed', species: message.species});

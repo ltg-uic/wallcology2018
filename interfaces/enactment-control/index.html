@@ -20,8 +20,18 @@
 
 	var type= query_parameters.TYPE;
 
-	nutella.net.request('get_activities',{},function(message,from){ 
-		nutella.net.request('get_current_run',{},function(currentClass,from){ 
+// ====
+
+
+// 	message = {topID: 4, activityList: [{ID: 1, name: "planning"}, {ID: 2, name: "naturalist"}, {ID: 3, name: "biotic experimentalist"}, {ID: 4, name: "modeler"}]}
+
+// ====
+
+
+	nutella.net.request('get_activities',{},function(msg,from){ 
+		var message = msg.activityList;
+		nutella.net.request('get_cluster_info',query_parameters.run_id,function(cc,from){ 
+			var currentClass = cc.current_run_id; 
 			nutella.net.request('currentActivityAndRoom',{},function(m, from){ 
 				window.document.write('<link rel="stylesheet" type="text/css" href="mystyle.css">'); 
 				document.write('<div style="font-size:120%"><br>Activity &nbsp<select id="activity" onChange="activityChange();">');
@@ -35,16 +45,16 @@
 				document.write('</select><br>');
 				document.write('Class &nbsp<select  id="class" onChange="classChange();">');
 				document.write('<option value="default">default</option>');
-				document.write('<option value="guest">guest</option>');
 				document.write('<option value="6BM">6BM</option>');
-				document.write('<option value="6MT">6MT</option>');
-				document.write('<option value="6AM">6AM</option>');
+				document.write('<option value="6BT">6BT</option>');
+				document.write('<option value="6FM">6FM</option>');
+				document.write('<option value="test">test</option>');
 				document.write('</select><br>');
 				if (currentClass == 'default') document.getElementById('class').selectedIndex = 0;
-				if (currentClass == 'guest') document.getElementById('class').selectedIndex = 1;
-				if (currentClass == '6BM') document.getElementById('class').selectedIndex = 2;
-				if (currentClass == '6MT') document.getElementById('class').selectedIndex = 3;
-				if (currentClass == '6AM') document.getElementById('class').selectedIndex = 4;
+				if (currentClass == '6BM') document.getElementById('class').selectedIndex = 1;
+				if (currentClass == '6BT') document.getElementById('class').selectedIndex = 2;
+				if (currentClass == '6FM') document.getElementById('class').selectedIndex = 3;
+				if (currentClass == 'test') document.getElementById('class').selectedIndex = 4;
 				for (var i=0; i<document.getElementById('activity').options.length; i++) {
 					if (document.getElementById('activity').options[i].value == m.activity) document.getElementById('activity').selectedIndex = i;
 				}
@@ -58,7 +68,7 @@
 	function classChange(){
 		var a = document.getElementById('class').selectedIndex; 
 
-		nutella.net.publish('set_current_run',document.getElementById('class').options[a].value);
+		nutella.net.publish('set_cluster_current_run_id',document.getElementById('class').options[a].value);
 
 	}
 

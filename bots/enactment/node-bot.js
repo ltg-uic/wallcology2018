@@ -118,7 +118,7 @@ function all() {
             setTimeout(function () { nutella.net.publish('state_update',{abiotic:a,biotic:b}); }, 60*1000);
         });
 
-        nutella.net.subscribe('seed', function(message, from) {
+        nutella.net.subscribe('seed', function(message, from) { console.log ('got seed');
             b[message['ecosystem']][message['species']]*=SEED_EFFECT;
             if  (b[message['ecosystem']][message['species']] < RESOURCE_MINIMUM) 
                 b[message['ecosystem']][message['species']] = RESOURCE_MINIMUM; 

@@ -1,0 +1,111 @@
+/*basic formatting for all roomcast iframes
+*/
+
+/* standard color scheme */
+
+/*:root {
+
+  --color0: black;
+  --color1: orange;
+  --color2: brown;
+  --color3: lightyellow;
+}
+*/
+
+:root {
+
+  --color0: black;
+  --color1: #558C83;
+  --color2: #4F6457;
+  --color3: #A9D4BF;
+  --text1: white;
+}
+
+/*:root {
+
+  --color0: black;
+  --color1: gray;
+  --color2: black;
+  --color3: #lightgray;
+  --text1: white;
+}
+*/
+
+
+html { 
+    width:100% ;
+    height:100% ;
+    overflow:hidden ;
+    color:White;
+}
+
+body {
+    font-family: "Arial";
+    overflow: hidden;
+    color: var(--text1);
+    height: 100%;
+}
+
+
+
+#unitName {
+  color: var(--color3); float:left;
+}
+
+#brandName {
+  color: var(--color3); float:right;
+}
+
+
+iframe { 
+border: none; overflow: hidden;
+width: 100%; 
+}
+
+.blankpage {
+  background: var(--color1);
+}
+
+#titleSlot {
+    display: block;
+    margin-top: 0;
+    margin-bottom: 3px;
+    margin-left: 0;
+    margin-right: 0;
+    color: white; 
+    text-align: center;
+    font-size: 150%;
+    font-family: sans-serif;"
+}
+
+#tabs .ui-tabs-active {
+  background: var(--color1);
+  border-style: none;
+}
+
+.ui-tabs .ui-tabs-tab
+{
+  background: var(--color3);       /* color of the little rim outide the tabs */
+  cursor: pointer;
+
+}
+
+.ui-tabs
+{
+  background: var(--color2); /* color of the little rim outide the iframe */
+  border: none;
+}
+
+.ui-tabs .ui-tabs-nav
+{
+background: var(--color2); /* this is the background color of the tabs bar */
+border: none;
+}
+
+.ui-tabs .ui-tabs-panel 
+{
+background: var(--color1); /* this is the background color of all the iframes */
+}
+
+/*end of basic roomcast styling
+*/

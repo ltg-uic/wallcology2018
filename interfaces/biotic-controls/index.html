@@ -38,8 +38,8 @@
 		var DELAY=60 * 1000; //one minute between actions
 		var inDelay = false;
 
-		var ecosystem = query_parameters.INSTANCE;
-		if (ecosystem === undefined) ecosystem = 0;
+		var ecosystem = top.instance.name; //this is a horrible hack 
+		if (isNaN(ecosystem)) ecosystem = 0; else ecosystem--;
 
 		var selected = -1;
 
@@ -55,13 +55,14 @@
 			// set up the size
 			document.write('width=' + s + ' height=' + s + ' ');
 			// and give the item an id
-			document.write('class="critter" id="img' + i + '"><span class="tooltiptext">'+top.species_names[i]+'</span></div><br>');
+			document.write('class="critter" id="img' + i + '"><span class="tooltiptext">'+species_names(i)+'</span></div><br>');
 			document.getElementById('img' + i).style.opacity="0.45";
 		};
 		document.write("</td>");
 		document.write("<td width=100></td>")
-		document.write("<td align=left style='font-size:150%'>");
-		document.write('<a id="opStatus">Manipulations available</a><br><br>');
+		document.write("<td align=left valign=top style='font-size:150%'>");
+		document.write('<a id="opStatus">biotic controls</a><br><br>');
+		document.write('<span style="font-size: 80%;">choose a species, then an operation</span><br><br>');
 
 		document.write('<button id="seed" disabled onClick="seed();">Apply seed</button><br>');
 		document.write('<button id="herbicide" disabled onClick="herbicide();">Apply herbicide</button><br>');
@@ -74,6 +75,9 @@
 		//nutella.net.subscribe('ping',function(message,from){});
 
 		// document.getElementById('img0').style.opacity="0.2";
+
+		function species_names(i){return i;}
+
 
 		function select(species){
 			if (!inDelay) {
@@ -120,7 +124,7 @@
 		}
 
 		function seed () {
-			if (inDelay) {alert('In Delay. Click ignored.'); return;}
+			if (inDelay) {alert('Operation already in progress.'); return;}
 			if (!confirm('WARNING: This operation will increase the population of the selected species. You will not be able to perform any other operations for one minute. Do you wish to proceed with this manipulation?')) return;
 			nutella.net.publish('seed',{ecosystem:ecosystem,species:selected});
 			document.getElementById('herbicide').disabled=true;
@@ -131,7 +135,7 @@
 		}
 
 		function herbicide () {
-			if (inDelay) {alert('In Delay. Click ignored.'); return;}
+			if (inDelay) {alert('Operation already in progress.'); return;}
 			if (!confirm('WARNING: This operation will decrease the population of the selected species. You will not be able to perform any other operations for one minute. Do you wish to proceed with this manipulation?')) return;
 			nutella.net.publish('herbicide',{ecosystem:ecosystem,species:selected});
 			document.getElementById('herbicide').disabled=true;
@@ -142,7 +146,7 @@
 		}
 
 		function colonize () {
-			if (inDelay) {alert('In Delay. Click ignored.'); return;}
+			if (inDelay) {alert('Operation already in progress.'); return;}
 			if (!confirm('WARNING: This operation will increase the population of the selected species. You will not be able to perform any other operations for one minute. Do you wish to proceed with this manipulation?')) return;
 			nutella.net.publish('colonize',{ecosystem:ecosystem,species:selected});
 			document.getElementById('colonizer').disabled=true;
@@ -153,7 +157,7 @@
 		}
 
 		function trap () {
-			if (inDelay) {alert('In Delay. Click ignored.'); return;}
+			if (inDelay) {alert('Operation already in progress.'); return;}
 			if (!confirm('WARNING: This operation will decrease the population of the selected species. You will not be able to perform any other operations for one minute. Do you wish to proceed with this manipulation?')) return;
 			nutella.net.publish('trap',{ecosystem:ecosystem,species:selected});
 			document.getElementById('colonizer').disabled=true;
@@ -173,7 +177,7 @@
 			disableAnimalControls();
 			selectAll();
 			inDelay=false;
-			document.getElementById('opStatus').innerHTML='Operations available';
+			document.getElementById('opStatus').innerHTML='Biotic Controls';
 		}
 
 	// Your code that uses the nutella instance here

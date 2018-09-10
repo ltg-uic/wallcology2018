@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+  <script src="nutella_lib.js" type="text/javascript"></script>
+
+  <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.2/themes/cupertino/jquery-ui.css" />
+ 
+  <style type="text/css">
+
+    .inactiveLink {
+       pointer-events: none;
+       cursor: default;
+    }
+
+    body {
+    	     color:white;
+    }
+
+    td {
+      width:200px;
+    }
+
+
+    li {
+      font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
+      border-bottom: 1px solid #ccc;
+      padding:5px 5px 5px 5px;
+      background-color:white;
+      list-style-type: none;
+    }
+    ul {
+       background-color:white;
+   }
+/*    li:last-child {
+      border: none;
+    }
+*/
+    li  a {
+      text-decoration: none;
+      color: white;
+
+      -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+      -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+      -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+      -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+      transition: font-size 0.3s ease, background-color 0.3s ease;
+      /*display: block;*/
+    }
+
+    #mydiv {
+      text-align: center;
+
+    }
+
+    .ui-dialog-titlebar-close {
+    visibility: hidden;
+	}	
+
+    button {
+      font-size: 20px;
+    }
+
+    li  a:hover {
+      font-size: 25px;
+      /*background: white;*/
+    }
+
+    #classes {
+      /*list-style: none;*/
+      padding-left: 0;
+    }
+ 
+    #instances {
+      /*list-style: none;*/
+      padding-left: 0;
+    }
+ 
+    #classes .sort-handle {
+      display: none;
+    }
+ 
+    #classes .ui-selected .sort-handle
+     {
+      display: inline;
+      padding: 0 0.5em;
+      cursor: pointer;
+    }
+
+    #classes {
+      /*list-style: none;*/
+      padding-left: 0;
+    }
+ 
+    #classes .sort-handle {
+      display: none;
+    }
+ 
+    #classes .ui-selected .sort-handle
+     {
+      display: none;
+    }
+
+    #resources {
+      /*list-style: none;*/
+      padding-left: 0;
+    }
+
+    #resources li a
+    {
+      /*list-style: none;*/
+      padding-left: 0;
+    }
+
+    #resources li a.toggleList {
+      font-weight: bold;
+    }
+ 
+    #resources .sort-handle {
+      display: none;
+    }
+ 
+    #resources .ui-selected
+     {
+      font-weight: bold;
+/*      display: inline;
+      padding: 0 0.5em;
+      cursor: pointer;
+*/    }
+
+    .header {
+      font-size:25px; 
+      font-family:Helvetica;
+    }
+
+    li a.ui-selected {
+      background-color: white;
+      color: black;
+      font-weight: bold;
+      background-image: none;
+    }
+
+    li.ui-selected {
+      background-color: white;
+      color: black;
+      font-weight: bold;
+      background-image: none;
+    }
+    li.ui-selecting {
+      background-color: white;
+      color: red;
+      background-image: none;
+    }
+ 
+  </style>
+  <script>
+    var query_parameters = NUTELLA.parseURLParameters();
+    var nutella = NUTELLA.init(query_parameters.broker, query_parameters.app_id, query_parameters.run_id, NUTELLA.parseComponentId());
+
+    var tentativeclassID = -1;
+    var tentativeclassName;
+
+
+    $(function() {
+
+    	// build the classes menu
+    	function build_classes_list() {
+    		$('#classes').empty();
+	    	for (var i=0; i<top.classes.classList.length; i++) {
+	    		var item = top.classes.classList[i];
+	    		if (item.ID != 1) { // you can't delete the planning class. not ever.
+		    	    var li = '<li class="ui-widget-content" value=' + item.ID + ' name="' + item.name + '"><a href="#">' + item.name + '</a></li>';
+				    $('#classes').append(li);
+				  }
+	    	}
+        // if a class is selected, highlight it
+        $( "#classes li a" ).off();
+        $('button').off();
+
+        $( "#classes li a" ).on( "click", function( event, ui ) { 
+          $( "#classes li" ).removeClass('ui-selected'); 
+          $( "#classes li a" ).removeClass('ui-selected');
+          var p = event.currentTarget;
+          tentativeclassName = p.innerHTML;
+          p = $(p);
+          p.addClass('ui-selected');
+          tentativeclassID = p.parent()[0].value;
+          });
+
+        $('#delete').on("click", function (event, ui){
+          for (var i=0; i<top.classes.classList.length; i++)
+            if (top.classes.classList[i].ID == tentativeclassID){
+              if (tentativeclassID == top.currentClass.ID){
+                alert("You cannot delete the current class."); return;
+              }
+              top.classes.classList.splice(i,1);
+              tentativeclassID = -1;
+              top.set_classes();
+              build_classes_list();
+              // location.reload(true);
+              return;
+            };
+          alert ('You must select a class first, then click Delete')
+        });
+
+        $("#renameDialog").dialog({
+          autoOpen : false,
+          width: 500 //, modal : false ,show : "blind", hide : "blind"
+        });
+
+        $('#rename').on("click", function (event, ui){
+          if (tentativeclassID == -1) {
+            alert ('You must select a class first, then click Rename');
+            return;
+          }
+          document.getElementById('revisedname').value = tentativeclassName;
+          $("#renameDialog").dialog("open");
+          document.getElementById('revisedname').select();
+          // return false;
+        });
+
+        $('#cancelRename').on("click", function(){
+          document.getElementById('revisedname').value = '';
+          $("#renameDialog").dialog("close");
+        })
+
+        $('#saveRename').on("click", function(){
+          $("#renameDialog").dialog("close");
+          for (var i=0; i<top.classes.classList.length; i++)
+            if (top.classes.classList[i].ID == tentativeclassID){
+              top.classes.classList[i].name = document.getElementById('revisedname').value;
+              tentativeclassID = -1;
+              top.set_classes();
+              build_classes_list();
+              // location.reload(true);
+              return;
+            };
+        });
+
+
+        $("#newnameDialog").dialog({
+          autoOpen : false,
+          width: 500 //, modal : false ,show : "blind", hide : "blind"
+        });
+
+        $('#new').on("click", function (event, ui){
+          document.getElementById('newname').value = "New class";
+          $("#newnameDialog").dialog("open");
+          document.getElementById('newname').select();
+          // return false;
+        });
+
+         $('#cancelNew').on("click", function(){
+          document.getElementById('newname').value = '';
+          $("#newnameDialog").dialog("close");
+        })
+
+        $('#saveNew').on("click", function(){
+          $("#newnameDialog").dialog("close");
+          top.classes.topID++;
+          top.classes.classList.push({ID:top.classes.topID,name:document.getElementById('newname').value});
+          top.set_classes();
+          build_classes_list();
+          // location.reload(true);
+        });
+
+	    }
+
+	    build_classes_list();
+
+	    // {"topID":2,"classList":[{"ID":1,"name":"designer"},{"ID":2,"name":"other"}]}
+	    // {"data":[{"classID":1,"topID":2,"instanceList":[{"ID":1,"name":"designer1"},{"ID":2,"name":"designer2"}]},{"classID":2,"topID":2,"instanceList":[{"ID":1,"name":"other1"},{"ID":2,"name":"other2"}]}]}
+
+
+	});
+
+</script>
+
+</head>
+<body>
+  <table>
+    <tr>
+      <td valign=top align=middle>
+        <span class="header"  id="open">classes</span><br>
+        <ul id="classes" class="list"></ul>
+        <button id="new">New class</button><br>
+        <button id="delete">Delete class</button><br>
+        <button id="rename">Rename class</button><br>
+      </td>
+   </tr>
+  </table>
+<div id="renameDialog" title="Rename the class">
+  <input type=text id="revisedname"><br>
+  <button id="cancelRename">Cancel</button>
+  <button id="saveRename">Save</button>
+</div>
+<div id="newnameDialog" title="New class">
+  <input type=text id="newname"><br>
+  <button id="cancelNew">Cancel</button>
+  <button id="saveNew">Save</button>
+</div>
+</body>
+</html>

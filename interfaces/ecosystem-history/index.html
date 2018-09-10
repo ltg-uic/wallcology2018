@@ -19,9 +19,9 @@
 	<script src="Chart.min.js"></script>
 	<script>
 	var species_names = [];
-	var query_parameters = NUTELLA.parseURLParameters();
-	var ecosystem = query_parameters.INSTANCE;
-	if (ecosystem === undefined) ecosystem = 0;
+	var query_parameters = NUTELLA.parseURLParameters(); 
+	var ecosystem = top.instance.name; //this is a horrible hack 
+	if (isNaN(ecosystem)) ecosystem = 0; else ecosystem--;
 	var nutella = NUTELLA.init(query_parameters.broker, query_parameters.app_id, query_parameters.run_id, NUTELLA.parseComponentId());
 	var thisSize = 1;
 	var thisBUS;
@@ -32,9 +32,9 @@
 	<script> window.document.write('<link rel="stylesheet" type="text/css" href="mystyle.css">'); </script>
 
 	<!-- Your markup here -->
-	<p align='left'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<span style="text-align:left;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<input hidden type=text size=1 id="ecosystem">
-	<a style="font-size:120%;"><b>From:</b></a>
+	<a style="font-size:120%; color:white;"><b>From:</b></a>
 	<select id="startMonth" onChange="query();">
 	  <option disabled value="January">January</option>
 	  <option disabled value="February">February</option>
@@ -58,7 +58,7 @@
 			  <option value="2016">2016</option>
 	  <option value="2017">2017</option>
 	</select>
- -->	<a style="font-size:120%;"><b>To:</b></a>
+ -->	<a style="font-size:120%; color:white;"><b>To:</b></a>
 	<select id="endMonth" onChange="query();">
 	  <option disabled value="January">January</option>
 	  <option disabled value="February">February</option>
@@ -81,8 +81,8 @@
 	<!-- &nbsp&nbsp -->
 	<input hidden type=checkbox id='normalize' onClick='query();'>  
 <input hidden type=checkbox id='hack' onClick='query();'><br><br>
-</p>
-	<table style="border-spacing:0px;padding:0;">
+</span>
+	<table  style="border-spacing:0px;padding:0;">
 		<tbody id="graphTable" > 
 		<script type="text/javascript">
 		var images = [ 	'https://ltg.cs.uic.edu/WC/icons/species_00.png',
@@ -98,23 +98,26 @@
 				'https://ltg.cs.uic.edu/WC/icons/species_10.png',
 			];
 
-			var myHt = Math.floor((parent.IW-261)/30); 
+			var myHt = Math.floor((parent.IW-261)/30)-10; 
 			if (parent.IW > parent.IH) myHt = 60; else myHt=35; // alert(myHt);
-			var myIconHt = Math.floor(myHt*0.8);
+			var myIconHt = Math.floor(myHt*1);
 			myHt=thisSize*myHt;
 
 			// var pingcount=0;
 			
 			document.write('<tr ');
 			if (thisSize != 1) document.write('hidden');
-			document.write('><td align=center><img id="abioticImage" src="temperature.png" onclick="toggleAbiotic();" height="' + myIconHt + '" ></td>');
+			document.write('><td align=center ><img id="abioticImage" src="temperature.png" onclick="toggleAbiotic();" height="' + myIconHt + '" ></td>');
+			// document.write('<td ></td>');
 			document.write('<td><canvas id="abioticCanvas" width="900" height="' + myHt + '"></td></tr>');
 
 			for (i=0; i<11; i++) {
 				document.write('<tr ');
 				if (thisSize != 1 && thisBUS != i) document.write('hidden');
 				/*&nbsp;<span style="vertical-align:middle;">' + top.species_names[i] + '</span>*/
-				document.write('><td><div class="tooltip"><img onClick="resizeMe(' + i + ');" src=' + images[i] + ' height="' + myIconHt + '" width="' + myIconHt + '"><span class="tooltiptext">'+top.species_names[i]+'</span></div></td>');
+				document.write('><td  ><div class="tooltip"><img onClick="resizeMe(' + i + ');" src=' + images[i] + ' height="' + myIconHt + '" width="' + myIconHt + '"><span class="tooltiptext">'+top.species_names[i]+'</span></div></td>');
+				// document.write('<td align=left style="font-size: 90%">' + top.species_names[i] + '</td>');
+
 				document.write('<td><canvas id="myChart' + i + '" width="900" height="' + myHt + '"></td></tr>');
 			}
 
@@ -176,6 +179,7 @@ function sortIt(){$("tbody").sortable();}
 	updateGraphs();
 
 	nutella.net.subscribe('state_update', function(message, from) {
+		// bioticActions
 		updateGraphs();
 	});
 
@@ -227,11 +231,12 @@ function sortIt(){$("tbody").sortable();}
 	}
 
 
-	function updateGraphs() {
+	function updateGraphs() { 
 		bioticActions = []; // array of biotic actions, one for each species
 		for (var i=0; i<11; i++) bioticActions[i]=[];
 		nutella.net.request('biotic-history',{ecosystem:ecosystem}, function(message, from){
-			console.log('requested biotic history');
+			console.log('received biotic history');
+			console.log(message);
 			for (var i=0; i<message.length; i++) { 
 				// console.log('i ' + i);
 				// console.log('message[i].species ' + message[i].species);
@@ -244,7 +249,7 @@ function sortIt(){$("tbody").sortable();}
 
 			abioticActions = []; // array of biotic actions, one for each species
 			nutella.net.request('abiotic-history',{ecosystem:ecosystem}, function(message, from){
-			console.log('requested abiotic history');
+			console.log('received abiotic history');
 				for (var i=0; i<message.length; i++) {
 					abioticActions.push(message[i]);
 				}
@@ -398,6 +403,14 @@ function sortIt(){$("tbody").sortable();}
 						}
 					}
 					ctx.closePath();
+					var seg_color = 'white';
+					if (j>0) {
+						var delta = response.biotic[j][i] - response.biotic[j-1][i];
+						var pct = delta/ response.biotic[j][i];
+						if (Math.abs(pct) > .02) seg_color = pct<0? 'red' : 'lightgreen';
+					}
+
+					ctx.strokeStyle = seg_color;
 					ctx.stroke();
 				}
 			}

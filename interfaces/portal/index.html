@@ -1,259 +1,284 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-<!-- 	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="viewport" content="width=device-width"/>
- -->	<!-- Your interface name here-->
-	<title></title>
-	<!-- The description of this interfaces here -->
-	<meta name="description" content="">
-	<script src="webfont.js"></script>
-</head>
-<!-- 
-<style>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="nutella_lib.js" type="text/javascript"></script>
+    <script src="roomcast_lib.js" type="text/javascript"></script>
+ 
+   <style type="text/css">
 
-html { width:100% ;
-    height:100% ;
-    overflow:hidden ;
-}
+    body {
+        font-family: "Arial";
+        overflow: hidden;
+             color:white;
 
-iframe { width:100% ;
-        height:100% ;
-    border:none ;
-}
+    }
 
 
-body {font-family: "Lato", sans-serif; width:100% ;
-    height:100% ;
-    overflow:hidden ;}
+    .inactiveLink {
+       pointer-events: none;
+       cursor: default;
+    }
 
-button {
-	color: #ca7;
-}
-
-ul.tab {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-}
-
-/* Float the list items side by side */
-ul.tab li {float: left;}
-
-/* Style the links inside the list items */
-ul.tab li a {
-    display: inline;
-    color: black;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    transition: 0.3s;
-    font-size: 17px;
-}
-
-/* Change background color of links on hover */
-ul.tab li a:hover {
-    background-color: #ddd;
-}
-
-/* Create an active/current tablink class */
-ul.tab li a:focus, .active {
-    background-color: #ccc;
-}
-/* Style the tab content */
-.tabcontent {
-    display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
-}
-</style>
-
- -->
- <body>
-	<!-- <button>mybutton</button> -->
-	<script src="nutella_lib.js" type="text/javascript"></script>
+    td {
+      width:200px;
+    }
 
 
-	<script type="text/javascript">
+    li {
+      font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
+      border-bottom: 1px solid #ccc;
+      padding:5px 5px 5px 5px;
+      background-color:white;
+      list-style-type: none;
+    }
+    ul {
+       background-color:white;
+   }
+/*    li:last-child {
+      border: none;
+    }
+*/
+    li  a {
+      text-decoration: none;
+      color: black;
+
+      -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+      -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+      -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+      -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+      transition: font-size 0.3s ease, background-color 0.3s ease;
+      /*display: block;*/
+    }
+
+    #mydiv {
+      text-align: center;
+
+    }
+
+    button {
+      font-size: 20px;
+    }
+
+    li  a:hover {
+      font-size: 25px;
+      /*background: white;*/
+    }
+
+    #portals {
+      /*list-style: none;*/
+      padding-left: 0;
+    }
+ 
+    #instances {
+      /*list-style: none;*/
+      padding-left: 0;
+    }
+ 
+    #portals .sort-handle {
+      display: none;
+    }
+ 
+    #portals .ui-selected .sort-handle
+     {
+      display: inline;
+      padding: 0 0.5em;
+      cursor: pointer;
+    }
+
+    #activities {
+      /*list-style: none;*/
+      padding-left: 0;
+    }
+ 
+    #activities .sort-handle {
+      display: none;
+    }
+ 
+    #activities .ui-selected .sort-handle
+     {
+      display: none;
+    }
+
+    #resources {
+      /*list-style: none;*/
+      padding-left: 0;
+    }
+
+    #resources li a
+    {
+      /*list-style: none;*/
+      padding-left: 0;
+    }
+
+    #resources li a.toggleList {
+      font-weight: bold;
+    }
+ 
+    #resources .sort-handle {
+      display: none;
+    }
+ 
+    #resources .ui-selected
+     {
+      font-weight: bold;
+/*      display: inline;
+      padding: 0 0.5em;
+      cursor: pointer;
+*/    }
+
+    .header {
+      font-size:25px; 
+      font-family:Helvetica;
+    }
+
+    li a.ui-selected {
+      background-color: white;
+      color: black;
+      font-weight: bold;
+      background-image: none;
+    }
+
+    li.ui-selected {
+      background-color: white;
+      color: black;
+      font-weight: bold;
+      background-image: none;
+    }
+    li.ui-selecting {
+      background-color: white;
+      color: red;
+      background-image: none;
+    }
+ 
+  </style>
+  
+
+  <script>
+    var query_parameters = NUTELLA.parseURLParameters();
+    var nutella = NUTELLA.init(query_parameters.broker, query_parameters.app_id, query_parameters.run_id, NUTELLA.parseComponentId());
+
+    // nutella.net.subscribe('fix_portal',function(){location.reload(true);});
+
+    var tentativePortalID;
+    var tentativePortalName;
+    var tentativePortalType;
+
+    $(function() {
+
+      // roomcast_style();
 
 
-	var instance;
-	var type;
+      // build the portals menu
 
-	var channel_lineup=[]; // = [{name: 'Abiotic controls', URL: 'http://localhost:57880/wallcology/default/runs/abiotic-controls/index.html?broker=127.0.0.1&app_id=wallcology&run_id=default'},{name: 'Biotic controls', URL: 'http://localhost:57880/wallcology/default/runs/biotic-controls/index.html?broker=127.0.0.1&app_id=wallcology&run_id=default'},{name: 'History', URL: 'http://localhost:57880/wallcology/default/runs/ecosystem-history/index.html?broker=127.0.0.1&app_id=wallcology&run_id=default'},{name: 'Enactment', URL: 'http://localhost:57880/wallcology/default/runs/enactment-control/index.html?broker=127.0.0.1&app_id=wallcology&run_id=default'},{name: 'Model Editor', URL: 'http://localhost:57880/wallcology/default/runs/newModelEditor/index.html?broker=127.0.0.1&app_id=wallcology&run_id=default'}];
-	
-	// Get an instance of nutella
+        $('#portals').empty();
+        for (var i=0; i<top.portals.portalList.length; i++) {
+          var item = top.portals.portalList[i];
+          if ((top.portal.ID == 1) || // 
+              (top.portal.ID == 2 && item.type != 'administrative') ||
+              (top.portal.ID > 2 && top.portal.ID == item.ID)
 
-	
+              // (top.portal.ID > 2 && top.portal.type == "administrative" && item.ID != 1) ||
+              // (top.portal.ID > 2 && top.portal.type == 'participant' && item.type == 'participant' && item.ID != 2) ||
+              // (top.portal.ID > 2 && top.portal.type == 'public' && item.type == 'public' && item.ID != 2)
+             )
+              {
+                var li = '<li class="ui-widget-content" value=' + item.ID + ' name="' + item.name + '"><a href="#">' + item.name + '</a></li>';
+                $('#portals').append(li);
+          }
+        }
 
-	var query_parameters = NUTELLA.parseURLParameters();
+        function lookupType(p){
+          var temp = top.portals.portalList.filter(function(item){
+            return (p == item.ID);
+          })[0];
+          return temp.type;
+        }
 
-	var nutella = NUTELLA.init(query_parameters.broker, query_parameters.app_id, query_parameters.run_id, NUTELLA.parseComponentId());
+      // highlight the current portal
 
-	nutella.net.subscribe('set_current_run', function (message,from){ 
-		if (message != query_parameters.run_id) {switchRuns(message);
-		}
-	});
+      $( "#portals li" ).filter(function(arg){
+            return( $( "#portals li" )[arg].value == top.portal.ID)
+        }).addClass('ui-selected');
 
-	// alert('1');
+      // if a portal is selected, highlight it
 
-	var type = '';
+      $( "#portals li a" ).on( "click", function( event, ui ) { 
 
-	// if (query_parameters.hasOwnProperty('TYPE') && query_parameters.hasOwnProperty('INSTANCE')) {login(query_parameters.TYPE,query_parameters.INSTANCE);}
+        $( "#portals li" ).removeClass('ui-selected'); 
+        $( "#portals li a" ).removeClass('ui-selected');
+        var p = event.currentTarget;
+        tentativePortalName = p.innerHTML;
+        p = $(p);
+        p.addClass('ui-selected');
+        tentativePortalID = p.parent()[0].value;
+        // top.set_portal();
+        $('#instances').empty();
 
-	if (query_parameters.hasOwnProperty('TYPE')) type = query_parameters.TYPE;
+        var instanceList = top.instances.data.filter(function(item){
+          return(item.portalID == tentativePortalID);
+        })[0].instanceList;
 
-	// var tempNames = ['Team','Student','Teacher','Ecosystem','Species','Public Display', 'Designer', 'Developer','Researcher'];
-	var tempNames = ['Group','Teacher','Ecosystem','Public Display', 'Designer', 'Developer','Researcher'];
-	nutella.net.request('get_current_run',{},function(message,from){ console.log('run');
-		if (message == query_parameters.run_id) { 
-
-			nutella.net.request('roster',{},function(logins, from) { console.log('roster');
-				nutella.net.request('get_species_names',{}, function(message, from){ 
-
-
-					window.document.write('<link rel="stylesheet" type="text/css" href="mystyle.css">');
-					document.write('<H2>' + query_parameters.app_id + ' ' + query_parameters.run_id + ' : portals </H2>');
-					document.write('<TABLE class="center" cellpadding="10">');
-					for (var i=0; i<logins.length; i++) {
-						if (type == '' || type == logins[i].type) {
-							document.write('<TR>');
-							// if (i==0) document.write('<TD><IMG height=60 width=60 src="tabletGirls.png"></TD>');
-							// 	else 
-							document.write('<TD align="right">' + tempNames[i] + '</TD>');
-							document.write('<TD>');
-							for (var j=0; j<logins[i].printNames.length; j++) {
-								var str;
-								if (tempNames[i] == 'Species') str = message[j];
-								else str = logins[i].printNames[j];
-								document.write('<button onClick="login(\'' + logins[i].type + '\',' + j + ');">' + str + '</button>');
-							}
-							document.write('</TD>');
-							document.write('</TR>');
-							document.write('<TR></TR><TR></TR><TR></TR>');
-						}
-					}
-					document.write('</TABLE>');
-				})	
-
-			});
-		} else {
-			switchRuns(message);
-		}
-	});
-
-	// } else { // lightCast tabbed page based on login
-	// 	instance = query_parameters.INSTANCE;
-	// 	type = query_parameters.TYPE;
-	// 	nutella.net.request('currentActivity', {}, function (currentActivity, from){
-	// 		nutella.net.request('channel_list',{activity:currentActivity,type:type}, function (channelList, from) {
-	// 			var channel_lineup = buildLineup (channelList, instance); 
-	// 			construct_user_interface(channel_lineup);
-	// 		});
-	// 	});
-	// };
+// ======== new =======
+        if (instanceList.length == 1) {
+          top.portal.ID = tentativePortalID;
+          top.portal.name = tentativePortalName;
+          top.portal.type = lookupType(tentativePortalID);
+          top.instance.ID = instanceList[0].ID;
+          top.instance.name = instanceList[0].name;
+          top.build_page();
+        }
+// ======== new =======
 
 
-	function switchRuns(newRun){
-		var s = 'http://';
-		s += window.location.host + '/';
-		s += query_parameters.app_id + '/';
-		s += newRun + '/';
-		s += 'runs/';
-		s += 'portal' + '/';
-		s += 'index.html' + '?';
-		s += 'broker=' + query_parameters.broker + '&';
-		s += 'app_id=' + query_parameters.app_id + '&';
-		s += 'run_id=' + newRun + '&';
-		s += 'TYPE=' + type;
 
-		location.href = s;
-		
-	};
+        $('#open').html("instance");
 
-	function login (type,instance) {
+        // rebuild the instances menu
 
-    	if (type == "designer" && prompt("Please enter your password", "") != "hrc") return;
-    	// else if (type != "group" && type != "designer" && prompt("Please enter your password", "") != "djt") return;
-		// look up class activity alert()
-		var s = 'http://';
-		s += window.location.host + '/';
-		s += query_parameters.app_id + '/';
-		s += query_parameters.run_id + '/';
-		s += 'runs/';
-		s += 'portal' + '/';
-		s += 'index2.html' + '?';
-		s += 'broker=' + query_parameters.broker + '&';
-		s += 'app_id=' + query_parameters.app_id + '&';
-		s += 'run_id=' + query_parameters.run_id + '&';
-		s += 'TYPE=' + type + '&';
-		s += 'INSTANCE=' + instance;
+        for (var i=0; i<instanceList.length; i++) { 
+          var item = instanceList[i];
+          var li = '<li class="ui-widget-content" value=' + item.ID + ' name="' + item.name + '"><a href="#">' + item.name + '</a></li>';
+        $('#instances').append(li);
+        }
 
-		location.href = s;
-	};
+        $( "#instances li a" ).off( "click");
+        $( "#instances li a" ).on( "click", function( event, ui ) { 
+          $( "#instances li" ).removeClass('ui-selected'); 
+          $( "#instances li a" ).removeClass('ui-selected');
+          var p = event.currentTarget;
+          top.instance.name = p.innerHTML;
+          p = $(p);
+          p.addClass('ui-selected');
+          top.instance.ID = p.parent()[0].value;
+          top.portal.ID = tentativePortalID;
+          top.portal.name = tentativePortalName;
+          top.portal.type = lookupType(tentativePortalID);
+ 
+          top.build_page();
+        });        
 
-	function buildLineup (channelList, instance) {
-		var s;
-		var channel_lineup = [];
-		for (var i=0; i<channelList.length; i++) {
-			s = 'http://';
-			s += window.location.host + '/';
-			s += query_parameters.app_id + '/';
-			s += query_parameters.run_id + '/';
-			s += 'runs/';
-			s += channelList[i] + '/';
-			s += 'index.html' + '?';
-			s += 'broker=' + query_parameters.broker + '&';
-			s += 'app_id=' + query_parameters.app_id + '&';
-			s += 'run_id=' + query_parameters.run_id + '&';
-			s += 'INSTANCE=' + instance;
+      });
 
-			channel_lineup[i] = {name: channelList[i], URL: s};
-		};
-		return (channel_lineup);
-	};
 
-	function construct_user_interface (channel_lineup) {
-
-		document.write('<ul class="tab">'); 
-
-		for (var i=0; i<channel_lineup.length ; i++){
-				document.write('<li><a href="#" class="tablinks" onclick="openTab(event, \'' + channel_lineup[i].name + '\')">' + channel_lineup[i].name + '</a></li>');
-			};
-
-//	   document.write('<li><a href="#" class="tablinks" onclick="openTab(event, \'enactment-control\')">enactment-control</a></li>');
-	  // <li><a href="#" class="tablinks" onclick="openCity(event, 'MSNBC')">MSNBC</a></li>
-	  // <li><a href="#" class="tablinks" onclick="openCity(event, 'FOX')">FOX</a></li>
-
-		document.writeln("</ul>");
-
-		for (var i=0; i<channel_lineup.length; i++) { 
-		  	document.writeln('<div id="' + channel_lineup[i].name + '" class="tabcontent"><iframe width="1000" height="800" src="' + channel_lineup[i].URL + '"></iframe> </div>');
-		};
-
-	};
-
-	function openTab(evt, channelName) { 
-	    var i, tabcontent, tablinks;
-	    tabcontent = document.getElementsByClassName("tabcontent"); 
-	    for (i = 0; i < tabcontent.length; i++) {
-	        tabcontent[i].style.display = "none";
-	    }
-	    tablinks = document.getElementsByClassName("tablinks");
-	    for (i = 0; i < tablinks.length; i++) {
-	        tablinks[i].className = tablinks[i].className.replace(" active", "");
-	    }
-	    document.getElementById(channelName).style.display = "inline";
-	    evt.currentTarget.className += " active";
-	}
+  });
 
 </script>
-     
+
+</head>
+<body>
+  <table>
+    <tr>
+      <td valign=top align=middle>
+         <span class="header">portal</span><br>
+        <ul id="portals" class="list"></ul>
+      </td>
+      <td valign=top align=middle>
+         <span class="header"  id="open"></span><br>
+        <ul id="instances" class="list"></ul>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>
-
