@@ -93,7 +93,7 @@ mfw.load(function(){
 
 
 
-        nutella.net.subscribe('save_claim',function(m,from){
+        nutella.net.subscribe('save_claim',function(m,from){ console.log(m);
             var message = m;
             var d = new Date();
             message.timestamp = d.getTime();

@@ -148,7 +148,7 @@
     var query_parameters = NUTELLA.parseURLParameters();
     var nutella = NUTELLA.init(query_parameters.broker, query_parameters.app_id, query_parameters.run_id, NUTELLA.parseComponentId());
 
-    nutella.net.request('get_readingsLog',{},function(message,from){
+    nutella.net.request('retrieve_user_log',{},function(message,from){
       document.write('<span style="color:white; font-size:25px;font-family:Helvetica;">readings log</span><br><br>');
       document.write('<span style="color:white; font-size:15px;font-family:Helvetica;">')
       for (var i=0; i<message.length; i++)

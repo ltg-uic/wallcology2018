@@ -9,11 +9,11 @@
 	<script src="webfont.js"></script>
 	<!-- Your CSS here -->
 </head>
-<body>
+<body style="color: black">
 	<!-- Your markup here -->
 	User log data<br>
 	<TEXTAREA id="log" rows=40 cols=80></TEXTAREA><br>
-	<button id="refresh" onClick="loadLog();">Refresh</button>
+	<button id="refresh" onClick="getLog();">Refresh</button>
 	<!-- Scripts -->
 	<script src="nutella_lib.js" type="text/javascript"></script>
 	<!-- Your scripts here -->
@@ -30,15 +30,21 @@
 	// (Optional) Set the resourceId
 	// nutella.setResourceId('my_resource_id');
 
-	function loadLog(){
+	function getLog(){ 
 		nutella.net.request('retrieve_user_log',{},function(message,from){ 
+			console.log('today:');
+			console.log(message);
 			document.getElementById('log').value = '';
 			for(var i=0; i<message.length; i++) {
 				document.getElementById('log').value += (message[i] + '\n');
 			}
 		});
-	}
-	
+	};
+
+	getLog();
+
+
+
 	</script>
 				
 </body>

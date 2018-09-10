@@ -48,7 +48,7 @@ var query_parameters, nutella;
 var h, bottomOfHeader,bottomOfVisibleWindow;
 var currentTab;
 var currentTabResource;
-var r = []; // what the hell is 'r'?
+var r = []; // array of resources
 var preselect;
 var preportal;
 var preactivity;
@@ -270,6 +270,8 @@ nutella.net.request('get_cluster_info',query_parameters.run_id, function(message
                         instance = {ID:0,name:""};
                       }
 
+                      userLogLI();
+
                     };
 
 
@@ -365,6 +367,8 @@ nutella.net.request('get_cluster_info',query_parameters.run_id, function(message
   // });
 });
 });
+
+var mr; //such a hack!
 function build_page() { 
 
 
@@ -501,7 +505,26 @@ function build_tab_bar() {
   if (r.length == 2) match = 1;
   $("#tabs").tabs("option","active", match);
 
+  $("#tabs").tabs({
+                    activate: function(event ,ui){
+                      var act = $("#tabs").tabs("option", "active");
+                      // alert(act);
+                      mr = 'unknown';
+                      for(var i=0; i<resources.resourceList.length;i++){
+                        if (resources.resourceList[i].ID == r[act]) mr = resources.resourceList[i].name;
+                      };
+                      userLogSR();
+
+                   }
+  });
 }
+
+ 
+// $('#tabs').click('tabsselect', function (event, ui) { alert('caught selection');
+//       // hack for wallcology2018, to work with logging system
+//     var selectedTab = $("#tabs").tabs('option','active');
+
+// });
 
 function set_activity(activity) { 
   document.getElementById('activityName').innerHTML = activity.name;
@@ -549,6 +572,80 @@ function set_activities() {
 function set_resources() {
   nutella.net.publish('set_resources',resources);
   // build_page();
+}
+
+
+function userLogLI(){ 
+  var S = "^,^";
+  var logEntry  = 'LI' + S;
+    logEntry += portal.name + S; // portal
+    logEntry += instance.name + S; // instance
+    logEntry += activity.name; // resource 
+    nutella.net.publish('add_to_user_log',logEntry);
+}
+
+function userLogSR(){ 
+var S = "^,^";
+var logEntry  = 'SR' + S;
+  logEntry += portal.name + S; // portal
+  logEntry += instance.name + S; // instance
+  logEntry += activity.name + S; // instance
+  logEntry += mr ; // resource 
+  nutella.net.publish('add_to_user_log',logEntry);
+}
+
+function userLogSL(link){ 
+var S = "^,^";
+var logEntry  = 'SL' + S;
+  logEntry += portal.name + S; // portal
+  logEntry += instance.name + S; // instance
+  logEntry += activity.name + S; // instance
+  logEntry += link.source + S; // instance
+  logEntry += link.destination + S; // instance
+  logEntry += link.color + S; // instance
+  logEntry += link.weight + S; // instance
+  logEntry += link.type ; // instance
+  nutella.net.publish('add_to_user_log',logEntry);
+}
+
+function userLogSC(claimSource){ 
+var S = "^,^";
+var logEntry  = 'SC' + S;
+  logEntry += portal.name + S; // portal
+  logEntry += instance.name + S; // instance
+  logEntry += activity.name + S; // instance
+  logEntry += claimSource ; // instance
+  nutella.net.publish('add_to_user_log',logEntry);
+}
+
+function userLogCC(){ 
+var S = "^,^";
+var logEntry  = 'CC' + S;
+  logEntry += portal.name + S; // portal
+  logEntry += instance.name + S; // instance
+  logEntry += activity.name ; // instance
+  nutella.net.publish('add_to_user_log',logEntry);
+}
+
+function userLogMS(speciesThatGotMoved){ 
+var S = "^,^";
+var logEntry  = 'SC' + S;
+  logEntry += portal.name + S; // portal
+  logEntry += instance.name + S; // instance
+  logEntry += activity.name + S; // instance
+  logEntry += speciesThatGotMoved ; // instance
+  nutella.net.publish('add_to_user_log',logEntry);
+}
+
+
+function userLogMB(badge){ 
+var S = "^,^";
+var logEntry  = 'SC' + S;
+  logEntry += portal.name + S; // portal
+  logEntry += instance.name + S; // instance
+  logEntry += activity.name + S; // instance
+  logEntry += badge ; // instance
+  nutella.net.publish('add_to_user_log',logEntry);
 }
 
 // function update_design() {

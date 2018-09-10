@@ -227,6 +227,7 @@
           top.portal.type = lookupType(tentativePortalID);
           top.instance.ID = instanceList[0].ID;
           top.instance.name = instanceList[0].name;
+          top.userLogLI();
           top.build_page();
         }
 // ======== new =======
@@ -255,7 +256,7 @@
           top.portal.ID = tentativePortalID;
           top.portal.name = tentativePortalName;
           top.portal.type = lookupType(tentativePortalID);
- 
+          top.userLogLI();
           top.build_page();
         });        
 
