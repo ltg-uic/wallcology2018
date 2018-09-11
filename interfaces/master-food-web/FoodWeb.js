@@ -535,6 +535,7 @@ function FoodWeb(){
     }
     //handles modal close
     function handleModalClose(e){
+        top.userLogCC();
         console.log("close modal: span.onclick");
         modal.style.display = "none";
         //find withdrawn claim from list of claims and remove it
@@ -563,11 +564,13 @@ function FoodWeb(){
     function handleModalOpen(e){
         //check to see if openedLine is empty - to run this function only once per click, otherwise, each line object will invoke
         if( isEmpty(openedLine) ){
+
             console.log("handleModalOpen");
             openedLine = e.target; //line clinked
             openedClaimIndex = 0;
             updateModalContent( openedLine );
             updateWithdrawClaim();
+
         }
     }
     //handles "view next claim" in opened modal
@@ -735,7 +738,7 @@ function FoodWeb(){
             }
         //}
     }
-    function startMove(x,y,isTouch){
+    function startMove(x,y,isTouch){ 
         //if ( !viewOnly ){
             // get the current mouse position
             var newx = x;
@@ -759,6 +762,7 @@ function FoodWeb(){
                     // if yes, set that obj isDragging=true
                     dragok = true;
                     b.isDragging = true;
+
                 }
             }
             // save the current mouse position
@@ -788,7 +792,7 @@ function FoodWeb(){
             var o = obj[i];
             var to;
             var from;
-            if( o.isDragging ){
+            if( o.isDragging ){ top.userLogMS(o.nickname);
                 //console.log("species: "+o.name+", isDragging: "+o.isDragging);
                 if( detectHit( o.x, o.y, activeArea )){
                     if ( o.active ){
@@ -832,10 +836,11 @@ function FoodWeb(){
             o.isDragging = false;
             //o.isHover = false;
         }
-        for (var j = 0; j < badges.length; j++) {
+        for (var j = 0; j < badges.length; j++) { 
             var b = badges[j];
-            if( b.isDragging ){
+            if( b.isDragging ){ top.userLogMB(b.name);
                 data.save("FOODWEB_BADGE_MOVE","group ;"+b.name+" ;x ;"+b.x+" ;y ;"+b.y);
+
             }
             b.isDragging = false;
         }
@@ -932,6 +937,10 @@ function FoodWeb(){
         
         var authorP = document.getElementById('author-p');
         var groupInstance = parseInt(openedLine.claims[openedClaimIndex].instance);
+        console.log('group instance');
+        console.log(groupInstance);
+        top.userLogSC(groupInstance + 1);
+
         authorP.innerHTML = "Group "+( groupInstance + 1);
         authorP.style.color = badgeColours[groupInstance];//"Red";
         //number-p        

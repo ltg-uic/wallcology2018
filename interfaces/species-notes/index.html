@@ -209,8 +209,9 @@
 			if (species0 == -1 || species1 == -1) { alert ('Please select both species'); return; };
 			if (document.getElementById('text2').value == "We think...") { alert ('Please describe your reasoning'); return; };
 			if (text == "relationship") { alert ('Please select the relationship between species'); return; };
+
 			var claim = {
-					instance: instance, 
+					instance: top.instance.name-1, 
 					source: species0, 
 					relationship: text.trim(), 
 					destination: species1,
@@ -220,7 +221,6 @@
 					figure3: document.getElementById('image3').src
 				};
 				alert(document.getElementById('image1').src);
-			// console.log(claim);
 			nutella.net.publish('save_claim',claim);
 			alert("Your claim has been added to the master food web");
 			// zap the form
