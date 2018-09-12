@@ -648,6 +648,16 @@ var logEntry  = 'MB' + S;
   nutella.net.publish('add_to_user_log',logEntry);
 }
 
+function userLogSE(index){ 
+var S = "^,^";
+var logEntry  = 'SE' + S;
+  logEntry += portal.name + S; // portal
+  logEntry += instance.name + S; // instance
+  logEntry += activity.name + S; // instance
+  logEntry += index ; // instance
+  nutella.net.publish('add_to_user_log',logEntry);
+}
+
 // function update_design() {
 //   nutella.net.publish('set_design',design);
 //   nutella.net.publish('fix_design',{});
