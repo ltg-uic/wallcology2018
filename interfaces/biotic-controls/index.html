@@ -22,7 +22,7 @@
 		setInterval(reconnect, 60*1000);
 
 		nutella.net.subscribe('ping',function(message,from){
-			console.log('biotic-controls received ping' + message);
+			console.log('biotic-controls received ping' + message + ' at ' + lastping);
 			lastping = (new Date).getTime();
 		});
 
