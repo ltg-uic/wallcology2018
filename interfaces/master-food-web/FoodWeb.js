@@ -1,10 +1,10 @@
 //WALLCOLOGY FOOD WEB
 function FoodWeb(){
     var mode = "deploy"; //"develop" or "deploy"
-    var fullscreen = true;
+    var fullscreen = false; //true;
     var app = "wallcology";
     var background = "dark";   //"light" or "dark"
-    var versionID = "20171008-1030";
+    var versionID = "20180915-1000";
     var query_parameters;
     var nutella;
     var group; //-1, 0, 1, 2, 3, 4, null
@@ -18,8 +18,8 @@ function FoodWeb(){
     var preScaledWidth;   //canvas width before retina screen resize
     var preScaledHeight;
 
-	//Drag related variables
-	var dragok = false;    //for mouse events
+    //Drag related variables
+    var dragok = false;    //for mouse events
     var startX;
     var startY;
     var mouseIsDown = 0;   //for showPos
@@ -99,14 +99,18 @@ function FoodWeb(){
         setInterval(reconnect, 60*1000);
 
         nutella.net.subscribe('ping',function(message,from){
-            console.log('received ping' + message);
+            var now = new Date;
+            console.log('MFW received ping ' + message + ' at ' + now);
             lastping = (new Date).getTime();
         });
 
         function reconnect(){
             var timeNow = (new Date).getTime();
             //save what you've got
-            if ((timeNow - lastping) > 70*1000) location.reload(true);
+            if ((timeNow - lastping) > 70*1000) {        
+                console.log('reloaded MFW due to timeout');
+                location.reload(true);
+            }
         }
         // end keep alive code
         
@@ -182,7 +186,7 @@ function FoodWeb(){
     }
     //resize canvas
     onResizeWindow("init");
-    
+
     //setup datalog
     data = new DataLog( nutella, app, mode );
     //setup display list items
@@ -289,16 +293,19 @@ function FoodWeb(){
         }
     }
     function onResizeWindow( init ){
-        // console.log("window height: "+parent.document.body.clientHeight+", width: "+parent.document.body.clientWidth);
+        // console.log("onResizeWindow window height: "+parent.document.body.clientHeight+", width: "+parent.document.body.clientWidth);
         // canvasWidth = (window.innerWidth == 0)? 980 : window.innerWidth;
         // canvasHeight = (window.innerHeight == 0)? 680 : window.innerHeight;
         canvasWidth = (parent.document.body.clientWidth == 0)? 980 : parent.document.body.clientWidth;
         canvasHeight = (parent.document.body.clientHeight == 0)? 680 : parent.document.body.clientHeight;
 
+        /* 
         if (mode == "deploy" ){
             canvasWidth -= 20;
             canvasHeight -= 30;
         }
+        */
+
         //Canvas for drag and drop
         canvas = document.getElementById("ui-layer");
         ctx = canvas.getContext("2d");
@@ -309,8 +316,8 @@ function FoodWeb(){
             canvas.width = canvasWidth;
             canvas.height = canvasHeight;
         } else if ( !fullscreen ){
-            var distFromTop = 26;
-            var distFromLeft = 24;
+            var distFromTop = 140; //26;
+            var distFromLeft = 60; //24;
             canvas.width = canvasWidth-distFromLeft;
             canvas.height = canvasHeight-distFromTop;
         }
@@ -371,6 +378,7 @@ function FoodWeb(){
             }
             data.save("FOODWEB_RESIZE","window.innerWidth; "+preScaledWidth+"; window.innerHeight; "+preScaledHeight);
         }
+        //console.log( "preScaledWidth: " + preScaledWidth + ", preScaledHeight: " + preScaledHeight );
         setTimeout(draw, 500);
     }
     function setupSpecies( speciesArr ){
@@ -478,6 +486,7 @@ function FoodWeb(){
         displayList.addChild( saveBtn );
         //one event listener works for all ImageTextButtons
         saveBtn.addEventListener( saveBtn.EVENT_CLICKED, handleToobarClicks ); 
+        //console.log("setupButtons: btnX: "+btnX+", btnY: "+btnY+", preScaledHeight: "+preScaledHeight);
     }
 
     //EVENTLISTENERS
@@ -565,12 +574,15 @@ function FoodWeb(){
         //check to see if openedLine is empty - to run this function only once per click, otherwise, each line object will invoke
         if( isEmpty(openedLine) ){
 
-            console.log("handleModalOpen");
             openedLine = e.target; //line clinked
             openedClaimIndex = 0;
             updateModalContent( openedLine );
             updateWithdrawClaim();
 
+            console.log("Select Link: " + openedLine.obj1.name + ", " + openedLine.obj2.name + ", "+ openedLine.type+", "+ openedLine.status+", "+  openedLine.confirmed+", "+  openedLine.votes);
+            //status: inprogress, inconflict
+            //confirmed: true, false
+            top.userLogSL( openedLine.obj1.name, openedLine.obj2.name, openedLine.type, openedLine.status, openedLine.confirmed, openedLine.votes );
         }
     }
     //handles "view next claim" in opened modal
@@ -792,7 +804,8 @@ function FoodWeb(){
             var o = obj[i];
             var to;
             var from;
-            if( o.isDragging ){ top.userLogMS(o.nickname);
+            if( o.isDragging ){ 
+                top.userLogMS(o.nickname);
                 //console.log("species: "+o.name+", isDragging: "+o.isDragging);
                 if( detectHit( o.x, o.y, activeArea )){
                     if ( o.active ){
@@ -937,8 +950,8 @@ function FoodWeb(){
         
         var authorP = document.getElementById('author-p');
         var groupInstance = parseInt(openedLine.claims[openedClaimIndex].instance);
-        console.log('group instance');
-        console.log(groupInstance);
+        // console.log('group instance');
+        // console.log(groupInstance);
         top.userLogSC(groupInstance + 1);
 
         authorP.innerHTML = "Group "+( groupInstance + 1);

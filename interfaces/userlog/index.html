@@ -31,14 +31,15 @@
 		setInterval(reconnect, 60*1000);
 
 		nutella.net.subscribe('ping',function(message,from){
-			console.log('userlog received ping' + message);
+		    var now = new Date;
+			console.log('userlog received ping ' + message + ' at ' + now);
 			lastping = (new Date).getTime();
 		});
 
 		function reconnect(){
 			var timeNow = (new Date).getTime();
 			if ((timeNow - lastping) > 90*1000) {
-				console.log('reloaded biotic-controls due to timeout');
+				console.log('reloaded userlog due to timeout');
 				location.reload(true);
 			}
 		}

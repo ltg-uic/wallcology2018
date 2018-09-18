@@ -61,28 +61,45 @@ var species_names = [];
 
   // initialize nutella 
 
+  var PING_INTERVAL = 60; // #seconds between checks to see if roomcast is still receiving
+                          // pings from the roomcast bot
+  var TIMEOUT_INTERVAL = 90; // no ping from roomcast bot in last 90 seconds means you reload yourself
+
   query_parameters = NUTELLA.parseURLParameters();
   nutella = NUTELLA.init(query_parameters.broker, query_parameters.app_id, query_parameters.run_id, NUTELLA.parseComponentId());
 
       // begin keep alive code
     var lastping = (new Date).getTime();
-    setInterval(reconnect, 60*1000);
+    setInterval(reconnect, PING_INTERVAL*1000);
 
     nutella.net.subscribe('ping',function(message,from){
-      console.log('roomcast received ping' + message + ' at ' + lastping);
+      var now = new Date;
+      console.log('roomcast received ping ' + message + ' at ' + now);
       lastping = (new Date).getTime();
     });
 
     function reconnect(){
       var timeNow = (new Date).getTime();
-      if ((timeNow - lastping) > 90*1000) {
-        console.log('reloaded biotic-controls due to timeout');
+      if ((timeNow - lastping) > TIMEOUT_INTERVAL*1000) {
+        console.log('reloaded roomcast due to timeout');
         location.reload(true);
       }
     }
     // end keep alive code
 
+    // begin keep server alive code
 
+    var PONG_INTERVAL = 60; //number of seconds between pings to keep clients alive
+
+    //======================
+    // keep clients alive
+    setInterval(pong, PONG_INTERVAL*1000); //ping every minute
+
+    function pong () {
+     nutella.net.publish('pong','roomcast');
+    }
+
+    // end keep server alive code
 
   // nutella.net.subscribe('reload',function(){location.reload(true);});
 

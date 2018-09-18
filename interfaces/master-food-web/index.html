@@ -206,9 +206,9 @@
 <!-- <script src="Version.js"></script> -->
 <script src="FoodWeb.js"></script>
 <script type="text/javascript">
-    window.addEventListener("load", eventWindowLoaded, false);	
+    window.addEventListener("load", eventWindowLoaded, false);  
     function eventWindowLoaded () {
-    	FoodWeb();
+        FoodWeb();
     }
 </script>
 </head>
@@ -295,6 +295,9 @@
             var tempW;
             var tempH;
 
+            console.log("Select evidence: "+ id);
+            top.userLogSE(id);
+
             //blow up images less than 200px by 200%
             if ( originalImage.naturalWidth < 200 ){
                 tempW = Math.floor(originalImage.naturalWidth * 2);
@@ -318,7 +321,7 @@
 
             var padTop = ((browserH-dimensions.h)<0 ) ? 0 : Math.floor((browserH-dimensions.h) / 2 );
 
-            console.log("browserH: "+browserH+", imgH: "+dimensions.h+", imgW: "+dimensions.w+", padTop: "+padTop);
+            //console.log("browserH: "+browserH+", imgH: "+dimensions.h+", imgW: "+dimensions.w+", padTop: "+padTop);
             document.getElementById('image-container').style.top = padTop + "px";
         }
         function checkImageSize( newW, newH, originalW, originalH ){

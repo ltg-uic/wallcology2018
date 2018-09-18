@@ -16,6 +16,11 @@ function ping () {
  nutella.net.publish('ping',pingcount++);
 }
 //======================
+// keep me alive code
+nutella.net.subscribe('pong',function(message,from){
+    var timeNow = new Date;
+    console.log('received pong from ' + message + ' at ' + timeNow);
+});
 
 
 var portals = nutella.persist.getJsonObjectStore('portals');
