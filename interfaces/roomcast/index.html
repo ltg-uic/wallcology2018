@@ -216,7 +216,7 @@ nutella.net.request('get_cluster_info',query_parameters.run_id, function(message
         nutella.net.request('get_instances',{},function(message,from){
           instances = message; 
           nutella.net.request('get_activities',{},function(message,from){
-            activities = message;
+            activities = message; console.log('activities'); console.log(activities);
             nutella.net.request('get_resources',{},function(message,from){
               resources = message;
               nutella.net.request('get_design',{},function(message,from){
@@ -315,6 +315,11 @@ nutella.net.request('get_cluster_info',query_parameters.run_id, function(message
                     build_page();
 
                     nutella.net.subscribe('activity_set', function(message){ 
+                      // wallcology 2018 hack follows
+
+                      if (portal.name == "wallscope") return;
+
+
                         // $( window ).resize(function() { 
                         //   bottomOfVisibleWindow = $(window).height(); 
                         //   h = bottomOfVisibleWindow - bottomOfHeader;
@@ -446,6 +451,8 @@ function build_header_bar() {
   document.getElementById('unitName').innerHTML = unitname.name.replace(/%20/g, " ");
   document.getElementById('portalName').innerHTML = portal.name.replace(/%20/g, " ");
   if (instance.ID != 0) document.getElementById('instanceName').innerHTML = instance.name.replace(/%20/g, " ");
+  // wallcology 2018 hack follow (next line)
+  if (portal.name == "wallscope") return;
   document.getElementById('activityName').innerHTML = activity.name.replace(/%20/g, " ");
 }
 

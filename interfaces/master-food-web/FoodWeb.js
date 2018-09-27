@@ -92,7 +92,18 @@ function FoodWeb(){
 
     //load nutella
     if ( mode == "deploy" ){
+
+        // added for student readable version of MFW
+
         query_parameters = NUTELLA.parseURLParameters();
+        if (query_parameters.hasOwnProperty('VERSION') && query_parameters.VERSION == 'READONLY') {
+            document.getElementById('withdraw').hidden=true;
+        }
+        
+
+        // end of addition
+
+
         nutella = NUTELLA.init(query_parameters.broker, query_parameters.app_id, query_parameters.run_id, NUTELLA.parseComponentId());    
         // begin keep alive code
         var lastping = (new Date).getTime();
@@ -483,7 +494,12 @@ function FoodWeb(){
         
         saveBtn = new ImageTextButton("Save", btnX, btnY, btnWidth, btnHeight, ctx, paletteColour, "#FFFFFF", "300 8pt 'Roboto'", 28, background);
         //btnY += toolbarSpacing + btnHeight;
-        displayList.addChild( saveBtn );
+
+        // added for student read-only version
+
+        if (!query_parameters.hasOwnProperty('VERSION') || query_parameters.VERSION != 'READONLY')
+            displayList.addChild( saveBtn );
+ 
         //one event listener works for all ImageTextButtons
         saveBtn.addEventListener( saveBtn.EVENT_CLICKED, handleToobarClicks ); 
         //console.log("setupButtons: btnX: "+btnX+", btnY: "+btnY+", preScaledHeight: "+preScaledHeight);
@@ -491,6 +507,11 @@ function FoodWeb(){
 
     //EVENTLISTENERS
     function handleWithdrawBtn(e){
+
+        if (query_parameters.hasOwnProperty('VERSION') && query_parameters.VERSION == 'READONLY') {
+            return;
+        }
+
         //console.log("handleWithdrawBtn: " + openedLine.claims.length );
         //console.log("withdrawnClaims.length: "+withdrawnClaims.length);
         //check if already withdrawn

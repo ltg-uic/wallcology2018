@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<!-- Your interface name here-->
-	<title>Ecosystem History</title>
+	<title>population trends</title>
 	<!-- The description of this interfaces here -->
 	<meta name="description" content="">
 	<script src="webfont.js"></script>
@@ -32,9 +32,9 @@
 	<script> window.document.write('<link rel="stylesheet" type="text/css" href="mystyle.css">'); </script>
 
 	<!-- Your markup here -->
-	<span style="text-align:left;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<span style="text-align:left;"> 
 	<input hidden type=text size=1 id="ecosystem">
-	<a style="font-size:120%; color:white;"><b>From:</b></a>
+	<a style="font-size:130%; color:white;"><b>Population trends from&nbsp;</b></a>
 	<select id="startMonth" onChange="query();">
 	  <option disabled value="January">January</option>
 	  <option disabled value="February">February</option>
@@ -58,7 +58,7 @@
 			  <option value="2016">2016</option>
 	  <option value="2017">2017</option>
 	</select>
- -->	<a style="font-size:120%; color:white;"><b>To:</b></a>
+ -->	<a style="font-size:120%; color:white;"><b>&nbsp;to&nbsp;</b></a>
 	<select id="endMonth" onChange="query();">
 	  <option disabled value="January">January</option>
 	  <option disabled value="February">February</option>
@@ -85,29 +85,39 @@
 	<table  style="border-spacing:0px;padding:0;">
 		<tbody id="graphTable" > 
 		<script type="text/javascript">
-		var images = [ 	'https://ltg.cs.uic.edu/WC/icons/species_00.png',
-				'https://ltg.cs.uic.edu/WC/icons/species_01.png',
-				'https://ltg.cs.uic.edu/WC/icons/species_02.png',
-				'https://ltg.cs.uic.edu/WC/icons/species_03.png',
-				'https://ltg.cs.uic.edu/WC/icons/species_04.png',
-				'https://ltg.cs.uic.edu/WC/icons/species_05.png',
-				'https://ltg.cs.uic.edu/WC/icons/species_06.png',
-				'https://ltg.cs.uic.edu/WC/icons/species_07.png',
-				'https://ltg.cs.uic.edu/WC/icons/species_08.png',
-				'https://ltg.cs.uic.edu/WC/icons/species_09.png',
-				'https://ltg.cs.uic.edu/WC/icons/species_10.png',
+
+// we need to fix this next, move files to local directory.
+
+
+		var images = [ 	'species_00.jpg',
+				'species_01.jpg',
+				'species_02.jpg',
+				'species_03.jpg',
+				'species_04.jpg',
+				'species_05.jpg',
+				'species_06.jpg',
+				'species_07.jpg',
+				'species_08.jpg',
+				'species_09.jpg',
+				'species_10.jpg',
 			];
 
 			var myHt = Math.floor((parent.IW-261)/30)-10; 
 			if (parent.IW > parent.IH) myHt = 60; else myHt=35; // alert(myHt);
-			var myIconHt = Math.floor(myHt*1);
+			var myIconHt = Math.floor(myHt*1.25);
 			myHt=thisSize*myHt;
 
 			// var pingcount=0;
 			
 			document.write('<tr ');
-			if (thisSize != 1) document.write('hidden');
-			document.write('><td align=center ><img id="abioticImage" src="temperature.png" onclick="toggleAbiotic();" height="' + myIconHt + '" ></td>');
+
+			//line below replaced as hack for wallcology 2018 (no abiotics)
+			// if (thisSize != 1) document.write('hidden');
+			document.write('hidden');
+
+			//end of hack
+
+			document.write('><td align=center ><img id="abioticImage" src="temperature.jpg" onclick="toggleAbiotic();" height="' + myIconHt + '" ></td>');
 			// document.write('<td ></td>');
 			document.write('<td><canvas id="abioticCanvas" width="900" height="' + myHt + '"></td></tr>');
 
@@ -226,7 +236,7 @@ function sortIt(){$("tbody").sortable();}
 	function toggleAbiotic() {
 		abioticDisplay++;
 		if (abioticDisplay==abioticOptions.length) abioticDisplay=0;
-		document.getElementById('abioticImage').src=abioticOptions[abioticDisplay]+'.png';
+		document.getElementById('abioticImage').src=abioticOptions[abioticDisplay]+'.jpg';
 		query();
 	}
 
@@ -407,7 +417,7 @@ function sortIt(){$("tbody").sortable();}
 					if (j>0) {
 						var delta = response.biotic[j][i] - response.biotic[j-1][i];
 						var pct = delta/ response.biotic[j][i];
-						if (Math.abs(pct) > .02) seg_color = pct<0? 'red' : 'lightgreen';
+						if (Math.abs(pct) > .02) seg_color = pct<0? 'red' : 'MediumSeaGreen';
 					}
 
 					ctx.strokeStyle = seg_color;
