@@ -48,6 +48,8 @@ p {
   nutella.net.subscribe('fix_URLs',function(dummy){location.reload(true)});
 
 $(function() {
+
+
   // roomcast_style();
   var baseURL = top.location.href; 
   // if(baseURL.substr(-1) == "#") baseURL.slice(0,-1);
@@ -56,6 +58,8 @@ $(function() {
 
   if (top.portalID == 1) buildURL('designer',baseURL,1);
   buildURL('educator',baseURL,2);
+  
+  console.log(top.portals.portalList);
 
   for (var i=2; i<top.portals.portalList.length; i++)
   {
@@ -68,15 +72,13 @@ $(function() {
   // buildURL('public',baseURL,find_portal('public'));
 
 
-  function buildURL(type,URL,portalID){
+  function buildURL(type,URL,portalID){ 
     if (portalID < 1)return;
     var thisURL = URL + '&portal=' + portalID;  
-    var s = '<a href="' + thisURL + '" onclick="window.open(' + "'" + thisURL + 
-      "','', 'width=700,height=600'); return false;" + '">' + type + '</a>: ';
+    var s = '<tr><td align=center><a href="' + thisURL + '" onclick="window.open(' + "'" + thisURL + 
+      "','', 'width=700,height=600'); return false;" + '">' + type + '</a></td> ' + '<td>' + thisURL +'</td></tr>';
     // console.log(s);
-    $('#portals').append(s);
-    $('#portals').append(thisURL);
-    $('#portals').append('<br><br>');    
+    $('#portals table').append(s);
   }
 
 
@@ -118,8 +120,10 @@ $(function() {
 </script>
 </head>
 <body>
-  <span style="text-size:150%;">Custom URLs</span><br><br>
-  <div id="portals"></div>
+  <span style="font-size:150%;">portal URLs</span><br><br>
+  <div id="portals" style="font-size:150%;"><table border>
+    <tr><td align=center style="font-size:85%;"><b>portal</b></td><td style="font-size:85%;"><b>URL</b></td></tr>
+  </table></div>
 
 <!-- 
 designer: <span id='designer'></span><br><br>

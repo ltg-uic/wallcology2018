@@ -89,17 +89,17 @@
 // we need to fix this next, move files to local directory.
 
 
-		var images = [ 	'species_00.jpg',
-				'species_01.jpg',
-				'species_02.jpg',
-				'species_03.jpg',
-				'species_04.jpg',
-				'species_05.jpg',
-				'species_06.jpg',
-				'species_07.jpg',
-				'species_08.jpg',
-				'species_09.jpg',
-				'species_10.jpg',
+		var images = [ 	'species_00.png',
+				'species_01.png',
+				'species_02.png',
+				'species_03.png',
+				'species_04.png',
+				'species_05.png',
+				'species_06.png',
+				'species_07.png',
+				'species_08.png',
+				'species_09.png',
+				'species_10.png',
 			];
 
 			var myHt = Math.floor((parent.IW-261)/30)-10; 
@@ -117,7 +117,7 @@
 
 			//end of hack
 
-			document.write('><td align=center ><img id="abioticImage" src="temperature.jpg" onclick="toggleAbiotic();" height="' + myIconHt + '" ></td>');
+			document.write('><td align=center ><img id="abioticImage" src="temperature.png" onclick="toggleAbiotic();" height="' + myIconHt + '" ></td>');
 			// document.write('<td ></td>');
 			document.write('<td><canvas id="abioticCanvas" width="900" height="' + myHt + '"></td></tr>');
 
@@ -236,7 +236,7 @@ function sortIt(){$("tbody").sortable();}
 	function toggleAbiotic() {
 		abioticDisplay++;
 		if (abioticDisplay==abioticOptions.length) abioticDisplay=0;
-		document.getElementById('abioticImage').src=abioticOptions[abioticDisplay]+'.jpg';
+		document.getElementById('abioticImage').src=abioticOptions[abioticDisplay]+'.png';
 		query();
 	}
 
