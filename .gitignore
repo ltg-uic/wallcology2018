@@ -23,4 +23,4 @@ unity/*
 interfaces/ecosystem-history/thermometer.png
 
 roomcast-log.txt
-bots/roomcast-bot/data/default/design.json
+bots/roomcast-bot/data/*
