@@ -24,3 +24,4 @@ interfaces/ecosystem-history/thermometer.png
 
 roomcast-log.txt
 bots/roomcast-bot/data/*
+bots/roomcast-bot/data/**
