@@ -1,5 +1,5 @@
 
-var NUTELLA = require('nutella_lib');
+var NUTELLA = require('nutella_lib')  ;
 
 // Get configuration parameters and init nutella
 var cliArgs = NUTELLA.parseArgs();
