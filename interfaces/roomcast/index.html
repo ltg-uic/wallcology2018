@@ -86,7 +86,6 @@ var species_names = [];
       }
     }
     // end keep alive code
-
     // begin keep server alive code
 
     var PONG_INTERVAL = 60; //number of seconds between pings to keep clients alive
@@ -155,7 +154,8 @@ $(function() {
     $("iframe").attr("height",h);
   });
 
-nutella.net.request('get_species_names',{},function(names,from){
+nutella.net.request('get_species_names',{},function(names,from){ 
+
   species_names = names;
 
 
