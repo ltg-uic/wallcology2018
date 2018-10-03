@@ -276,7 +276,7 @@ nutella.net.request('get_cluster_info',query_parameters.run_id, function(message
 
                     // did the URL specify an instance?
 
-                    instanceID = query_parameters.hasOwnProperty('instance')? query_parameters.portal : 0;
+                    instanceID = query_parameters.hasOwnProperty('instance')? query_parameters.instance : 0;
 
                     // if an instance is specified, see if it exists. if not, bail.
 
