@@ -22,3 +22,6 @@ roomcast-log.txt
 **bots/roomcast-bot/data
 **bots/class-bot/data
 *.json
+bots/class-bot/data/clusters.json
+bots/class-bot/data/current.json
+bots/roomcast-bot/data/default/design.json
