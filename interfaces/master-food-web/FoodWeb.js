@@ -97,7 +97,7 @@ function FoodWeb(){
 
         query_parameters = NUTELLA.parseURLParameters();
         if (query_parameters.hasOwnProperty('VERSION') && query_parameters.VERSION == 'READONLY') {
-            document.getElementById('withdraw').hidden=true;
+            document.getElementById('withdraw').style.display = "none";
         }
         
 

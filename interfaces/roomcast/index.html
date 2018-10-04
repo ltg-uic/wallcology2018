@@ -212,13 +212,13 @@ nutella.net.request('get_cluster_info',query_parameters.run_id, function(message
 
       // alert(classes.classList[0].name);
       nutella.net.request('get_portals',{},function(message,from){ 
-        portals = message;
+        portals = message; console.log('portals'); console.log(portals);
         nutella.net.request('get_instances',{},function(message,from){
-          instances = message; 
+          instances = message; console.log('instances'); console.log(instances);
           nutella.net.request('get_activities',{},function(message,from){
             activities = message; console.log('activities'); console.log(activities);
             nutella.net.request('get_resources',{},function(message,from){
-              resources = message;
+              resources = message;console.log('resources'); console.log(resources);
               nutella.net.request('get_design',{},function(message,from){
                 design = message;
                 nutella.net.request('get_activity',{},function(message,from){
@@ -468,17 +468,28 @@ function build_tab_bar() {
   // if there isn't an instance, you have to pick that before we can build the tabs out
 
   if (instance.ID == 0) r = [];
+///////
+  // // add "portal" resource to tabs, no matter what. (unless you're the phenomenon server root application)
+
+  // if (query_parameters.run_id != "ps") r.unshift(1); 
+
+  // // maintain constant order for resources
+
+  // r.sort(function(a, b){return (a-b)});
+
+  // // process each resource
+///////
 
   // add "portal" resource to tabs, no matter what. (unless you're the phenomenon server root application)
 
-  if (query_parameters.run_id != "ps") r.unshift(1); 
 
   // maintain constant order for resources
 
   r.sort(function(a, b){return (a-b)});
-
+  // if (query_parameters.run_id != "ps") r.push(1); 
+  if (!query_parameters.hasOwnProperty('instance')) r.push(1);
   // process each resource
-
+///////
   var t;
   match = 0;
 
@@ -547,7 +558,9 @@ function build_tab_bar() {
   // else $("#tabs").tabs("option","active", 0);
 // preselect=1;
   if (r.length == 2) match = 1;
-  $("#tabs").tabs("option","active", match);
+  // $("#tabs").tabs("option","active", match);
+  if (r.length == 1) $("#tabs").tabs("option","active", 0);
+  if (r.length == 2) $("#tabs").tabs("option","active", 0);
 
   $("#tabs").tabs({
                     activate: function(event ,ui){

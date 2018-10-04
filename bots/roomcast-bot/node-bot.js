@@ -1,4 +1,4 @@
-
+console.log('test');
 var NUTELLA = require('nutella_lib');
 
 // Get configuration parameters and init nutella
@@ -24,7 +24,10 @@ nutella.net.subscribe('pong',function(message,from){
 
 
 var portals = nutella.persist.getJsonObjectStore('portals');
+
 portals.load();
+console.log('portals');
+console.log(portals);
 if (!portals.hasOwnProperty('topID')){
     portals = {topID: 10, portalList: 
         [
@@ -47,15 +50,26 @@ if (!instances.hasOwnProperty('data')){
         ]
     };
     instances.save();
-
+    console.log(instances);
 };
 
 var activities = nutella.persist.getJsonObjectStore('activities');
+
 activities.load();
+console.log('activities');
+console.log(activities);
 if (!activities.hasOwnProperty('topID')){
     activities = {topID: 1, activityList: [{ID:1,name:"planning"}]};
     activities.save();
 };
+
+nutella.net.handle_requests('get_activities', function (message, from){
+    console.log('asked for activities');
+    console.log(activities);
+    return (activities);
+});
+
+
 
 var resources = nutella.persist.getJsonObjectStore('resources');
 resources.load();
@@ -145,9 +159,9 @@ nutella.net.handle_requests('get_portals', function (message, from){ console.log
 nutella.net.handle_requests('get_instances', function (message, from){
     return (instances);
 });
-nutella.net.handle_requests('get_activities', function (message, from){
-    return (activities);
-});
+// nutella.net.handle_requests('get_activities', function (message, from){
+//     return (activities);
+// });
 nutella.net.handle_requests('get_resources', function (message, from){
     return (resources);
 });
