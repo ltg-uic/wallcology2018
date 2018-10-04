@@ -334,6 +334,7 @@ nutella.net.request('get_cluster_info',query_parameters.run_id, function(message
 
                     nutella.net.subscribe('design_set', function(message){
                       design = message;
+                      if (portal.name == "wallscope") return; 
                       if (design_flag) build_page(); else design_flag = true;
                     });
 
