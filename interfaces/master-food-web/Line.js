@@ -434,8 +434,10 @@ function Line(n,o1,o2,c,l,t,s,f,d,sc,bg,lc,v,cl){
         //console.log("onMouseUp, x: "+mouseX+", y: "+mouseY+", isHitTrue: "+isHitTrue);
         
         if( isHitTrue ){
-            if (tapLength < 500 && tapLength > 0) {
-                console.log("Double tap");
+            if (tapLength < 500 && tapLength > 0 && !READONLY) {
+             // && !(query_parameters.hasOwnProperty('VERSION') && query_parameters.VERSION == 'READONLY')
+                
+                    console.log("Double tap");
                 toggleConfirm(o);
                 //make line blue
                 e.preventDefault();

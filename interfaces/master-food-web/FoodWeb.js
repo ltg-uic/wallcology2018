@@ -1,4 +1,6 @@
 //WALLCOLOGY FOOD WEB
+var READONLY = false;
+
 function FoodWeb(){
     var mode = "deploy"; //"develop" or "deploy"
     var fullscreen = false; //true;
@@ -97,8 +99,9 @@ function FoodWeb(){
 
         query_parameters = NUTELLA.parseURLParameters();
         if (query_parameters.hasOwnProperty('VERSION') && query_parameters.VERSION == 'READONLY') {
-            document.getElementById('withdraw').style.display = "none";
+            READONLY = true;
         }
+        if (READONLY) document.getElementById('withdraw').style.display = "none";
         
 
         // end of addition
@@ -497,8 +500,7 @@ function FoodWeb(){
 
         // added for student read-only version
 
-        if (!query_parameters.hasOwnProperty('VERSION') || query_parameters.VERSION != 'READONLY')
-            displayList.addChild( saveBtn );
+        if (!READONLY) displayList.addChild( saveBtn );
  
         //one event listener works for all ImageTextButtons
         saveBtn.addEventListener( saveBtn.EVENT_CLICKED, handleToobarClicks ); 
