@@ -143,6 +143,8 @@ function all() {
             crank();
         });
 
+        RUNNING = true; crank();
+
     });
 
 });
