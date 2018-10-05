@@ -271,7 +271,7 @@
 		function blowup(id) { //alert($('#claim').height());
 			document.getElementById('img01').src = document.getElementById(id).src;
 
-			if (document.getElementById('img01').width == 0) {
+			if (document.getElementById('img01').width == 0 || document.getElementById('img01').height == 0) {
 				document.getElementById('img01').onload = fixImage();
 			} else fixImage();
 
@@ -283,7 +283,7 @@
 				var ih= document.getElementById('img01').naturalHeight;
 				if (ih == 0) iw = document.getElementById('img01').height;
 
-				// alert(bw + ' ' + iw + '  ' + bh + '  ' + ih);
+				alert(bw + ' ' + iw + '  ' + bh + '  ' + ih);
 
 				document.getElementById('img01').height = document.getElementById('img01').naturalHeight;
 				document.getElementById('img01').width = document.getElementById('img01').naturalWidth;
