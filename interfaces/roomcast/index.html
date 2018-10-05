@@ -295,6 +295,7 @@ nutella.net.request('get_cluster_info',query_parameters.run_id, function(message
                       // okay, we have a match. this is a legitimate instance for this portal
 
                       instance = {ID:ins[0].ID,name:ins[0].name};
+                      userLogLI();
 
                     } else {
 
