@@ -227,7 +227,7 @@
 			var value = e.options[e.selectedIndex].value;
 			var text = e.options[e.selectedIndex].text;
 			if (species0 == -1 || species1 == -1) { alert ('Please select both species'); return; };
-			if (document.getElementById('text2').value == "We think...") { alert ('Please describe your reasoning'); return; };
+			if (document.getElementById('text2').value == "") { alert ('Please provide your reasoning'); return; };
 			if (text == "relationship") { alert ('Please select the relationship between species'); return; };
 
 			var claim = {
@@ -254,19 +254,99 @@
 			$('#relationship').empty();
 				$('#relationship').append('<option>relationship</option>');
 		}
-		function blowup(id) {
-			var originalImage = document.getElementById(id); 
-			var blownUpImage = document.getElementById("img01");
-			blownUpImage.style.height="auto";
-			if (originalImage.naturalWidth > originalImage.naturalHeight) {
-				blownUpImage.style.width="100%"; 
-			} else {
-				var ratio = Math.floor((originalImage.naturalWidth / originalImage.naturalHeight) * 100);
-				blownUpImage.style.width= ratio + "%";
+		// function blowup(id) {
+		// 	var originalImage = document.getElementById(id); 
+		// 	var blownUpImage = document.getElementById("img01");
+		// 	blownUpImage.style.height="auto";
+		// 	if (originalImage.naturalWidth > originalImage.naturalHeight) {
+		// 		blownUpImage.style.width="100%"; 
+		// 	} else {
+		// 		var ratio = Math.floor((originalImage.naturalWidth / originalImage.naturalHeight) * 100);
+		// 		blownUpImage.style.width= ratio + "%";
+		// 	}
+		// 	blownUpImage.src = originalImage.src;;
+		//     document.getElementById('yourModal').style.display = "block";
+		// }
+
+		function blowup(id) { //alert($('#claim').height());
+			document.getElementById('img01').src = document.getElementById(id).src;
+			var bw = $('body').width();
+			var iw = document.getElementById('img01').naturalWidth;
+			var bh = $('body').height();
+			var ih= document.getElementById('img01').naturalHeight;
+
+			document.getElementById('img01').height = document.getElementById('img01').naturalHeight;
+			document.getElementById('img01').width = document.getElementById('img01').naturalWidth;
+
+			var bar = bw/bh;
+			var iar = iw/ih;
+
+			if (iar > bar & iw > bw*.9) { //alert('wide picture');
+
+				// wide image; image is wider than available space
+
+				ih = (bw * .9)/iw * ih;
+				iw = bw*.9;
+				document.getElementById('img01').height = ih;
+				document.getElementById('img01').width = iw;
+
 			}
-			blownUpImage.src = originalImage.src;;
-		    document.getElementById('yourModal').style.display = "block";
+
+				// bar = bw/bh;
+				// iar = iw/ih;
+
+			if (iar <= bar & ih > bh*.9) { //alert('tall picture');
+
+				// wide image; image is wider than available space
+
+				iw = (bh * .9)/ih * iw;
+				ih = bh*.9;
+				document.getElementById('img01').height = ih;
+				document.getElementById('img01').width = iw;
+
+			}
+
+			$('#yourModal').css('left',Math.floor((bw - iw)/2) + 'px');
+			$('#yourModal').css('top',Math.floor((bh - ih)/2) + 'px');
+
+
+			// alert(document.getElementById('img01').naturalHeight);
+			// alert(id);
+			// .naturalHeight
+			// alert($('#image1').height());
+			// var originalImage = document.getElementById(id); 
+			// var blownUpImage = document.getElementById("img01");
+			// 	blownUpImage.src = originalImage.src;
+			// 	blownUpImage.style.height = 200;
+			// 	blownUpImage.style.width = 200;
+			// // 	alert(blownUpImage.style.height);
+
+			// // var availableHeight = $('#claim').height();
+			// // var availableWidth = $('#claim').width();
+
+			// // if (originalImage.naturalHeight <= availableHeight && originalImage.naturalWidth <= availableWidth){
+			// // 	blownUpImage.style.height = originalImage.naturalHeight;
+			// // 	blownUpImage.style.width = originalImage.naturalWidth;
+			// // 	console.log(blownUpImage.style.width);
+			    document.getElementById('yourModal').style.display = "inline-block";
+			// // }
+
+
+
+			// blownUpImage.style.height="auto";
+			// if (originalImage.naturalWidth > originalImage.naturalHeight) {
+			// 	blownUpImage.style.width="100%"; 
+			// } else {
+			// 	var ratio = Math.floor((originalImage.naturalWidth / originalImage.naturalHeight) * 100);
+			// 	blownUpImage.style.width= ratio + "%";
+			// }
 		}
+
+
+
+
+
+
 		var loadFile1 = function(event) {
 			// userLog('species-notes',['Selected photo upload',group, selected,selectedClaim,1]);
 			var output = document.getElementById('image1');
@@ -295,16 +375,16 @@
 </head>
 <body>
 	<div  align=center  id="claim">
-		<table>
-			<tr style="background-color:DarkCyan;">
+		<table >
+			<tr style="background-color:#558C83;">
 				<td align=center style="font-size:180%;" class="table-title">Claim</td>
 				<td style="text-align:center;" colspan=3>
 					<img src="qmark.png" id="species0" height=80 width=80 style="vertical-align:middle">
-		    		<select style="font-size:180%;" id="relationship"><option>relationship</option></select>
+		    		<select style="background-color:#558C83;font-size:180%;" id="relationship"><option>relationship</option></select>
 		    		<img src="qmark.png" id="species1" height=80 width=80 style="vertical-align:middle">
 		    	</td>
 		    </tr>
-		    <tr style="background-color:DarkCyan;">
+		    <tr style="background-color:#558C83;">
 				<td align=center  style="font-size:180%;" class="table-title">Evidence</td>
 				<td align=center >
 			    	<img onClick="blowup(this.id);" id="image1" src="qmark.png" height=100 width=100 /><br><input hidden id="abc1" type="file" accept="image/*" onchange="loadFile1(event)"><button class="button" onClick="document.getElementById('abc1').click()">Figure 1</button>
@@ -316,15 +396,15 @@
 			    	<img onClick="blowup(this.id);" id="image3" src="qmark.png" height=100 width=100 /><br><input hidden id="abc3" type="file" accept="image/*" onchange="loadFile3(event)"><button class="button" onClick="document.getElementById('abc3').click()">Figure 3</button>
 		    	</td>
 		    </tr>
-		    <tr style="background-color:DarkCyan;">
+		    <tr style="background-color:#558C83;">
 		    	<td align=center  style="font-size:180%;" class="table-title">Reasoning</td>
-		    	<td colspan=3>
-		    		<textarea style="font-size: 18pt;" id="text2" rows=13 cols=70>How does your evidence support your claim?</textarea><br>
+		    	<td  style="text-align:left;font-size:20pt;" colspan=3>How does your evidence support your claim?<br>
+		    		<textarea style="font-size: 18pt;" id="text2" rows=12 cols=70></textarea><br>
 		    	</td>
 		    </tr>
-		    <tr>
+		    <tr style="background-color:#558C83;">
 		    	<td colspan=4 align=right>
-		    		<button class="button" onclick="send_it();">Submit Claim</button>
+		    		<button style="margin-bottom: 20px;" class="button" onclick="send_it();">Submit Claim</button>
 		    	</td>
 		    </tr>
 		</table>
@@ -332,16 +412,35 @@
 	<div align=center id="species_selector" class="modal">
 			<div class="modal-content" id="species_list">				
 			</div>
-		</div>
-	<div id="yourModal" class="modal2">
-		<div class="modal2-content" align="center">
+	</div>
+<!-- 	<div align=center id="yourModal" class="modal2">
+		<div class="modal2-content" align=center>
 			<span class="close" id="image-close" onclick="document.getElementById('yourModal').style.display='none';">×</span>
 			<img src="" id="img01" >
 		</div>
 	</div>
+ -->
+	<div style="background-color:transparent;" id="yourModal" class="modal2">
+		<div style="background-color:transparent;" class="modal2-content">
+			<span class="close" style="font-size:300%;color:red;" id="image-close" onclick="document.getElementById('yourModal').style.display='none';">×</span>
+			<img style="background-color:transparent;" src="" id="img01" >
+		</div>
+	</div>
 
 
+<!-- #wrapper {
+  background-color: green; /* for visualization purposes */
+  text-align: center;
+}
+#yourdiv {
+  background-color: red; /* for visualization purposes */
+  display: inline-block;
+}
+<div id="wrapper">    
+    <div id="yourdiv">Your text</div>
+</div>
 
+ -->
 <!-- 
 	    <div id="divH" style="display:table;width:95%;">
 			    Claim:&nbsp&nbsp
