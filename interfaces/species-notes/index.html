@@ -272,8 +272,10 @@
 			document.getElementById('img01').src = document.getElementById(id).src;
 			var bw = $('body').width();
 			var iw = document.getElementById('img01').naturalWidth;
+			if (iw == 0) iw = document.getElementById('img01').width;
 			var bh = $('body').height();
 			var ih= document.getElementById('img01').naturalHeight;
+			if (ih == 0) iw = document.getElementById('img01').height;
 
 			alert(bw + ' ' + iw + '  ' + bh + '  ' + ih);
 
