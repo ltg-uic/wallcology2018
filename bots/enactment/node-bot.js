@@ -73,8 +73,8 @@ function all() {
 
         a = reply['abiotic'];
         b = reply['biotic'];
-        setInterval(crank, 10*60*1000); // else setInterval(crank, 40*60*1000);
         RUNNING = true; crank();
+        setInterval(crank, 10*60*1000); // else setInterval(crank, 40*60*1000);
 
 
         // subscribe to abiotic controls
@@ -139,7 +139,6 @@ function all() {
 
         nutella.net.subscribe('start_simulation', function(interval, from) {
             console.log('start simulation'); 
-            delayBetweenSteps = interval;
             RUNNING = true;
             crank();
         });

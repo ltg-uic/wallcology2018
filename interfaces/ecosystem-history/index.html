@@ -103,7 +103,7 @@
 			];
 
 			var myHt = Math.floor((parent.IW-261)/30)-10; 
-			if (parent.IW > parent.IH) myHt = 60; else myHt=35; // alert(myHt);
+			if (parent.IW > parent.IH) myHt = 60; else myHt=50; // alert(myHt);
 			var myIconHt = Math.floor(myHt*1.25);
 			myHt=thisSize*myHt;
 
@@ -119,7 +119,7 @@
 
 			document.write('><td align=center ><img id="abioticImage" src="temperature.png" onclick="toggleAbiotic();" height="' + myIconHt + '" ></td>');
 			// document.write('<td ></td>');
-			document.write('<td><canvas id="abioticCanvas" width="900" height="' + myHt + '"></td></tr>');
+			document.write('<td><canvas id="abioticCanvas" width="1200" height="' + myHt + '"></td></tr>');
 
 			for (i=0; i<11; i++) {
 				document.write('<tr ');
@@ -128,7 +128,7 @@
 				document.write('><td  ><div class="tooltip"><img onClick="resizeMe(' + i + ');" src=' + images[i] + ' height="' + myIconHt + '" width="' + myIconHt + '"><span class="tooltiptext">'+top.species_names[i]+'</span></div></td>');
 				// document.write('<td align=left style="font-size: 90%">' + top.species_names[i] + '</td>');
 
-				document.write('<td><canvas id="myChart' + i + '" width="900" height="' + myHt + '"></td></tr>');
+				document.write('<td><canvas id="myChart' + i + '" width="1200" height="' + myHt + '"></td></tr>');
 			}
 
 		</script>
@@ -330,7 +330,7 @@ function sortIt(){$("tbody").sortable();}
 			var normalizedMax = [10,5,10,5,100,100,10,10,5,100,100,1];
 			var max=[];
 			var min = 0;
-			var WIDTH = 900;
+			var WIDTH = 900 + 200 ;
 			var xOffset = 20;
 			var yOffset = 5;
 			var HEIGHT = myHt;
@@ -347,7 +347,7 @@ function sortIt(){$("tbody").sortable();}
 					max[i]=yMax;
 				}
 
-				var yUnit = (HEIGHT - yOffset - yOffset)/max[i];
+				var yUnit = (HEIGHT - yOffset - yOffset)/max[i] * 1.25;
 				var ident = (i==11)? 'abioticCanvas'  :  'myChart' + i;
 
 				var ctx = document.getElementById(ident).getContext('2d');
@@ -368,8 +368,8 @@ function sortIt(){$("tbody").sortable();}
 
 				for (var j=1; j<howManyDays;j++){
 					ctx.beginPath();
-					ctx.moveTo(xOffset-10 + j*tickInterval,HEIGHT-yOffset-5);
-					ctx.lineTo(xOffset-10 + j*tickInterval,HEIGHT-yOffset+15);
+					ctx.moveTo(xOffset-20 + j*tickInterval,HEIGHT-yOffset-5);
+					ctx.lineTo(xOffset-20 + j*tickInterval,HEIGHT-yOffset+15);
 					ctx.stroke();
 				}
 
