@@ -61,7 +61,7 @@ nutella.net.handle_requests('running', function(request) {
     return RUNNING;
 });
 
-console.log('got at least here'); setTimeout(all,5000);
+console.log('got at least here'); setTimeout(all,15000);
 function all() {
     nutella.net.request('read_population_model',{}, function(response, from){
     console.log('gets started');
