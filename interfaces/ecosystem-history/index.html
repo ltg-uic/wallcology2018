@@ -326,8 +326,7 @@ function sortIt(){$("tbody").sortable();}
 
 
 		nutella.net.request('ecosystem_history', {ecosystem:ecosystem,start:lower,stop:upper}, function(response) {
-			console.log('requested ecosystem history');alert('got here 2');
-			var c = response.biotic.length;
+			console.log('requested ecosystem history');
 			var normalizedMax = [10,5,10,5,100,100,10,10,5,100,100,1];
 			var max=[];
 			var min = 0;
