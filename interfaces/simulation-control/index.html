@@ -156,7 +156,7 @@
     var previous_class;
     var running;
     $(function() {
-      nutella.net.request('running',{},function(RUNNING){ 
+      nutella.net.request('running',{},function(RUNNING){ alert(RUNNING);
         running = RUNNING;
         // build the classes menu
 
@@ -199,7 +199,6 @@
 
           if (running) {
             if (name == 'running') return;
-            alert('got here');
             running = false;
             nutella.net.publish('stop_simulation',{});
           } else {
