@@ -30,7 +30,7 @@
 	if (query_parameters.hasOwnProperty('BUS')) thisBUS = query_parameters.BUS;
 	</script>
 	<script> window.document.write('<link rel="stylesheet" type="text/css" href="mystyle.css">'); </script>
-
+<div align=center>
 	<!-- Your markup here -->
 	<span style="text-align:left;"> 
 	<input hidden type=text size=1 id="ecosystem">
@@ -82,7 +82,7 @@
 	<input hidden type=checkbox id='normalize' onClick='query();'>  
 <input hidden type=checkbox id='hack' onClick='query();'><br><br>
 </span>
-	<table  style="border-spacing:0px;padding:0;">
+	<table  style="background-color:DarkSlateGray;border-spacing:0px;padding:0;">
 		<tbody id="graphTable" > 
 		<script type="text/javascript">
 
@@ -125,7 +125,7 @@
 				document.write('<tr ');
 				if (thisSize != 1 && thisBUS != i) document.write('hidden');
 				/*&nbsp;<span style="vertical-align:middle;">' + top.species_names[i] + '</span>*/
-				document.write('><td  ><div class="tooltip"><img onClick="resizeMe(' + i + ');" src=' + images[i] + ' height="' + myIconHt + '" width="' + myIconHt + '"><span class="tooltiptext">'+top.species_names[i]+'</span></div></td>');
+				document.write('><td style="padding-left:15px;" ><div class="tooltip"><img onClick="resizeMe(' + i + ');" src=' + images[i] + ' height="' + myIconHt + '" width="' + myIconHt + '"><span class="tooltiptext">'+top.species_names[i]+'</span></div></td>');
 				// document.write('<td align=left style="font-size: 90%">' + top.species_names[i] + '</td>');
 
 				document.write('<td><canvas id="myChart' + i + '" width="1200" height="' + myHt + '"></td></tr>');
@@ -134,6 +134,7 @@
 		</script>
 	</tbody>
 </table>
+</div>
 	<!-- Scripts -->
 
 	<!-- Your scripts here -->
