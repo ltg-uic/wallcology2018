@@ -334,7 +334,7 @@ function sortIt(){$("tbody").sortable();}
 			var xOffset = 30;
 			var yOffset = 5;
 			var HEIGHT = myHt;
-			var xUnit = Math.ceil((WIDTH - xOffset)/c);
+			var xUnit = (WIDTH - xOffset)/c;
 			var howManyDays = Math.round((upper-lower)/(24*60*60*1000));
 			for (var i=0; i<12; i++){
 				if (document.getElementById('normalize').checked || i==11) {
@@ -352,13 +352,13 @@ function sortIt(){$("tbody").sortable();}
 
 				var ctx = document.getElementById(ident).getContext('2d');
 //				ctx.clearRect(0, 0, WIDTH, HEIGHT);
-				ctx.clearRect(0, 0, WIDTH, HEIGHT);
+				ctx.clearRect(0, 0, WIDTH+xOffset, HEIGHT+yOffset);
 				ctx.strokeStyle = 'Silver';
 				ctx.lineWidth = 1;
 				ctx.beginPath();
 				ctx.moveTo(xOffset,yOffset);
 				ctx.lineTo(xOffset, HEIGHT - yOffset);
-				ctx.lineTo(WIDTH,HEIGHT - yOffset);
+				ctx.lineTo(WIDTH+xOffset,HEIGHT - yOffset);
 				ctx.stroke();
 
 				// draw the day tick marks
@@ -376,7 +376,7 @@ function sortIt(){$("tbody").sortable();}
 				// draw the dots reflecting biotic actions
 
 				if (i!=11) { 
-					for (var k=0; k<bioticActions[i].length; k++) {
+					for (var k=0; k<bioticActions[i].length; k++) { 
 						if (bioticActions[i][k].timestamp >= lower && bioticActions[i][k].timestamp <= upper) {
 						      ctx.beginPath();
 						      ctx.arc(xOffset+(bioticActions[i][k].timestamp-lower)/(upper-lower)*(WIDTH - 2*xOffset)-5, HEIGHT-yOffset, 3, 0, 2 * Math.PI, false);
@@ -408,8 +408,8 @@ function sortIt(){$("tbody").sortable();}
 					} else {
 						var tod = 75/howManyDays * .4;
 						if (true || sm != 11 || sd != 9 || j>tod){
-							ctx.moveTo(xOffset + j*xUnit, HEIGHT - yOffset);
-							ctx.lineTo(xOffset + j*xUnit, HEIGHT - (yOffset + fudge(yUnit*response.biotic[j][i])));
+							ctx.moveTo(xOffset + (j+1)*xUnit, HEIGHT - yOffset);
+							ctx.lineTo(xOffset + (j+1)*xUnit, HEIGHT - (yOffset + fudge(yUnit*response.biotic[j][i])));
 						}
 					}
 					ctx.closePath();
@@ -420,7 +420,7 @@ function sortIt(){$("tbody").sortable();}
 						if (Math.abs(pct) > .02) seg_color = pct<0? 'red' : 'MediumSeaGreen';
 					}
 
-					ctx.strokeStyle = seg_color;
+					ctx.strokeStyle = seg_color; 
 					ctx.stroke();
 				}
 			}
