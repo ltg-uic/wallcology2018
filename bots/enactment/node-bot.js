@@ -74,6 +74,7 @@ function all() {
         a = reply['abiotic'];
         b = reply['biotic'];
         setInterval(crank, 10*60*1000); // else setInterval(crank, 40*60*1000);
+        RUNNING = true; crank();
 
 
         // subscribe to abiotic controls
@@ -143,7 +144,6 @@ function all() {
             crank();
         });
 
-        RUNNING = true; crank();
 
     });
 
