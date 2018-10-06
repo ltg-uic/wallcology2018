@@ -119,7 +119,7 @@
 
 			document.write('><td align=center ><img id="abioticImage" src="temperature.png" onclick="toggleAbiotic();" height="' + myIconHt + '" ></td>');
 			// document.write('<td ></td>');
-			document.write('<td><canvas id="abioticCanvas" width="1100" height="' + myHt + '"></td></tr>');
+			document.write('<td><canvas id="abioticCanvas" width="1200" height="' + myHt + '"></td></tr>');
 
 			for (i=0; i<11; i++) {
 				document.write('<tr ');
@@ -128,7 +128,7 @@
 				document.write('><td  ><div class="tooltip"><img onClick="resizeMe(' + i + ');" src=' + images[i] + ' height="' + myIconHt + '" width="' + myIconHt + '"><span class="tooltiptext">'+top.species_names[i]+'</span></div></td>');
 				// document.write('<td align=left style="font-size: 90%">' + top.species_names[i] + '</td>');
 
-				document.write('<td><canvas id="myChart' + i + '" width="1100" height="' + myHt + '"></td></tr>');
+				document.write('<td><canvas id="myChart' + i + '" width="1200" height="' + myHt + '"></td></tr>');
 			}
 
 		</script>
