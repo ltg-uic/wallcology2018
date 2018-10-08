@@ -6,7 +6,7 @@ function FoodWeb(){
     var fullscreen = false; //true;
     var app = "wallcology";
     var background = "dark";   //"light" or "dark"
-    var versionID = "20180915-1000";
+    var versionID = "20181006-1030";
     var query_parameters;
     var nutella;
     var group; //-1, 0, 1, 2, 3, 4, null
@@ -85,9 +85,12 @@ function FoodWeb(){
     var openedClaimIndex;   //saves index of claim being viewed
     var modal, modalText, modalCloseBtn, modalWithdrawBtn, modalNextBtn;
 
+    var savedDrawingH;
+    var savedDrawingW;
+
     //var viewOnlyBtn;
-    // var savedVersionsNum;   //number of saved versions retrieved from nutella
-    // var viewOnly = false;
+    //var savedVersionsNum;   //number of saved versions retrieved from nutella
+    //var viewOnly = false;
     //var input;
     
     console.log("window height: "+parent.document.body.clientHeight+", width: "+parent.document.body.clientWidth);
@@ -605,7 +608,7 @@ function FoodWeb(){
             console.log("Select Link: " + openedLine.obj1.name + ", " + openedLine.obj2.name + ", "+ openedLine.type+", "+ openedLine.status+", "+  openedLine.confirmed+", "+  openedLine.votes);
             //status: inprogress, inconflict
             //confirmed: true, false
-            top.userLogSL( openedLine.obj1.name, openedLine.obj2.name, openedLine.type, openedLine.status, openedLine.confirmed, openedLine.votes );
+            top.userLogSL( {source: openedLine.obj1.name, destination: openedLine.obj2.name, type: openedLine.type, status: openedLine.status, confirmed: openedLine.confirmed, votes: openedLine.votes} );
         }
     }
     //handles "view next claim" in opened modal
@@ -1322,14 +1325,40 @@ function FoodWeb(){
             groupBadges = [];
         }
 
+        //get saved drawing dimensions
+        if (drawing.hasOwnProperty('drawingH') ){
+            //console.log("savedDrawingH: "+ drawing.drawingH);
+            savedDrawingH = drawing.drawingH;
+        }
+
+        if (drawing.hasOwnProperty('drawingW') ){
+            //console.log("savedDrawingW: "+ drawing.drawingW);
+            savedDrawingW = drawing.drawingW;
+        }
+
+        //set scale to 1 inititally
+        var scaleW = 1;
+        var scaleH = 1;
+
+        //determine scale factor, assuming scale of saved drawing is larger than 
+        if( READONLY ){
+            //Round to two decimals use, Math.round(num * 100) / 100 
+            scaleW = Math.round(preScaledWidth / savedDrawingW * 1000) / 1000;
+            scaleH = Math.round(preScaledHeight / savedDrawingH * 1000) / 1000;
+            console.log("scaleW: "+ scaleW + ", scaleH: "+scaleH);
+            //if scale values are smaller than 0, it means that the current screen is smaller than the saved canvas dimensions
+            //should take the smaller of the two ratios if aspect ratio is kept consistent
+        }
+
         //update xy positions from existing drawing
         for(var i=0; i<nodes.length; i++){
             var n = nodes[i];
             for (var k=0; k<obj.length; k++){
                 var o = obj[k];
                 if( n.name == o.name ){
-                    o.x = n.x;
-                    o.y = n.y;
+                    //scale object x and y positions if READONLY
+                    o.x = Math.round( n.x * scaleW * 1000) / 1000;
+                    o.y = Math.round( n.y * scaleH * 1000) / 1000;
                     o.active = false;
                 }
             }

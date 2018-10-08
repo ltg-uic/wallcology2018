@@ -661,9 +661,10 @@ var logEntry  = 'SL' + S;
   logEntry += activity.name + S; // instance
   logEntry += link.source + S; // instance
   logEntry += link.destination + S; // instance
-  logEntry += link.color + S; // instance
-  logEntry += link.weight + S; // instance
-  logEntry += link.type ; // instance
+  logEntry += link.type + S; // instance
+  logEntry += link.status + S; // instance
+  logEntry += link.confirmed + S; // instance
+  logEntry += link.votes ; // instance
   nutella.net.publish('add_to_user_log',logEntry);
 }
 

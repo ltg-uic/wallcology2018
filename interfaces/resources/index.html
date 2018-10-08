@@ -156,6 +156,9 @@
  
   </style>
   <script>
+
+    $(function() {
+
     var query_parameters = NUTELLA.parseURLParameters();
     var nutella = NUTELLA.init(query_parameters.broker, query_parameters.app_id, query_parameters.run_id, NUTELLA.parseComponentId());
 
@@ -163,7 +166,6 @@
     var tentativeResourceName;
     var resource, link;
 
-    $(function() {
 
       if (top.portal.type == 'administrative') $('.showadmin').show();
 
