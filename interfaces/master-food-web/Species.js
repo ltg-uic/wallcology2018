@@ -36,16 +36,6 @@ function Species ( n, x, y, h, w, c, sc, l){
         //this.context.globalAlpha = 0.5;
         //this.context.drawImage( placeholder, this.px, this.py, this.width, this.height );
         //this.context.globalAlpha = 1;
-        if ( this.isHover ){
-            this.context.shadowBlur=0;
-            this.context.shadowOffsetX = 0;
-            this.context.shadowOffsetY = 0;
-            this.context.font = "500 10pt 'Roboto'";
-            this.context.textAlign = "center";
-            this.context.textBaseline = "top";
-            this.context.fillStyle = "#FFFFFF";
-            this.context.fillText(this.nickname, this.x+this.width/2, this.y+this.height+10);
-        }
         if ( this.active ){
             this.context.shadowBlur = 4;
             this.context.shadowColor = shadowColour;
@@ -57,6 +47,17 @@ function Species ( n, x, y, h, w, c, sc, l){
             this.context.shadowOffsetY = 0;
         }
     	this.context.drawImage( image, this.x, this.y, this.width, this.height );
+        if ( this.isHover ){
+            this.context.shadowBlur=0;
+            this.context.shadowOffsetX = 0;
+            this.context.shadowOffsetY = 0;
+            this.context.font = "500 20pt 'Roboto'";
+            this.context.textAlign = "left";
+            this.context.textBaseline = "top";
+            this.context.fillStyle = "yellow";
+            // this.context.fillText(this.nickname, this.x+this.width/2, this.y+this.height+10);
+            this.context.fillText(this.nickname, this.x + this.width+20, this.y+10);
+        }
     }
     
     function loadImage(file) {

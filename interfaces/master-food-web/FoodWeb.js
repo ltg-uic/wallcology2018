@@ -403,7 +403,7 @@ function FoodWeb(){
         var tempY = speciesMargin;
         for(var i=0; i<speciesArr.length; i++){
             var sp = speciesArr[i];
-            var nickname = i ; //top.species_names[i]; //top.species_names[species[type][i]]; 
+            var nickname = top.species_names[i]; //top.species_names[species[type][i]]; 
             var tempObj = new Species( sp.name, 
                 (paletteWidth-sp.width)/2, tempY+speciesSpacing-sp.height/2, 
                 sp.height, sp.width, ctx, shadowColour, nickname );

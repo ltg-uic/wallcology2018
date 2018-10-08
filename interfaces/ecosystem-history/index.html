@@ -34,7 +34,7 @@
 	<!-- Your markup here -->
 	<span style="text-align:left;"> 
 	<input hidden type=text size=1 id="ecosystem">
-	<a style="font-size:130%; color:white;"><b>Population trends from&nbsp;</b></a>
+	<a style="font-size:130%; color:white;"><b>ecosystem <span id="esn"></span> population trends from&nbsp;</b></a>
 	<select id="startMonth" onChange="query();">
 	  <option disabled value="January">January</option>
 	  <option disabled value="February">February</option>
@@ -85,6 +85,7 @@
 	<table  style="background-color:DarkSlateGray;border-spacing:0px;padding:0;">
 		<tbody id="graphTable" > 
 		<script type="text/javascript">
+			document.getElementById('esn').innerHTML=ecosystem+1;
 
 // we need to fix this next, move files to local directory.
 
