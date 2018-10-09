@@ -1,5 +1,91 @@
 //WALLCOLOGY FOOD WEB
 var READONLY = false;
+        var image = new Image();
+        image.onload = function() { 
+            image.onclick = function() { 
+                // document.getElementById('image-layer').style.display = "none";
+            }
+            // Get the <span> element that closes the image modal
+            var span = document.getElementsByClassName("close")[1];
+            
+            span.onclick = function() { 
+                document.getElementById('image-layer').style.display = "none";
+            }
+
+         }
+        // img.src = "http://path/to/image.jpg";
+        image = document.getElementById("img01");
+
+        // image.onclick = function() { 
+        //     // document.getElementById('image-layer').style.display = "none";
+        // }
+        // // Get the <span> element that closes the image modal
+        // var span = document.getElementsByClassName("close")[1];
+        
+        // span.onclick = function() { 
+        //     document.getElementById('image-layer').style.display = "none";
+        // }
+        function blowup(id) {
+            document.getElementById('image-layer').style.display = "block";
+            var originalImage = document.getElementById(id);
+            var modalImg = document.getElementById("img01");
+            modalImg.src = originalImage.src;
+
+            var browserH = parent.document.body.clientHeight - 42; //30;
+
+            var tempW;
+            var tempH;
+
+            console.log("Select evidence: "+ id);
+            top.userLogSE(id);
+
+            //blow up images less than 200px by 200%
+            if ( originalImage.naturalWidth < 200 ){
+                tempW = Math.floor(originalImage.naturalWidth * 2);
+                tempH = Math.floor(originalImage.naturalHeight * 2);
+            //blow up images less than 500px by 175%
+            } else if ( originalImage.naturalWidth < 500 ){
+                // modalImg.style.width = Math.floor(originalImage.naturalWidth * 1.75) + "px";
+                // modalImg.style.height = Math.floor(originalImage.naturalHeight * 1.75) + "px";
+                // uploadedImageIsSmall = true;
+                tempW = Math.floor(originalImage.naturalWidth * 1.75);
+                tempH = Math.floor(originalImage.naturalHeight * 1.75);
+            } else {
+                tempW = originalImage.naturalWidth;
+                tempH = originalImage.naturalHeight;
+            }
+                            
+            var dimensions = checkImageSize( tempW, tempH, originalImage.naturalWidth, originalImage.naturalHeight);
+
+            modalImg.style.width = dimensions.w + "px";
+            modalImg.style.height = dimensions.h + "px";
+
+            var padTop = ((browserH-dimensions.h)<0 ) ? 0 : Math.floor((browserH-dimensions.h) / 2 );
+
+            //console.log("browserH: "+browserH+", imgH: "+dimensions.h+", imgW: "+dimensions.w+", padTop: "+padTop);
+            document.getElementById('image-container').style.top = padTop + "px";
+        }
+        function checkImageSize( newW, newH, originalW, originalH ){
+            //max-height = 700px
+            //max-width = 1000px
+            var imgH;
+            var imgW;
+            //resize if newH greater than 700
+            if ( newH > 700 ){
+                imgH = 700;
+                imgW = Math.floor(700 * originalW / originalH);
+            } else {
+                imgH = newH;
+                imgW = newW;
+            }
+            //resize if newW > 1000
+            if ( newW > 1000 ){
+                imgH = Math.floor(1000 * originalH / originalW);
+                imgW = 1000;
+            } 
+            return { h: imgH, w: imgW }
+        }
+
 
 function FoodWeb(){
     var mode = "deploy"; //"develop" or "deploy"
@@ -176,17 +262,17 @@ function FoodWeb(){
     });
     //load colours
     if ( background == "dark" ){
-        backgroundColour = "#263238";   //"#303030";   //"#3d5168";
+        backgroundColour = "#303C3E"; // "#263238";   //"#303030";   //"#3d5168";
         textboxColour = "#56687d";
         shadowColour = "#212121";       //"#253240";
-        lineColour = "#39b54a";
-        lineColours = ["#39b54a", "#FF5722", "#42A5F5"];    //green, red-orange, blue, yellow
-        paletteColour = "#1f292e";      //"#2b394a";   //"#212121";      //"#2b394a";
-        toolbarColour = "#212121";      //"#344559";
+        lineColour = "#81D3C0"; // "#39b54a";
+        lineColours = ["#81D3C0", "red", "#42A5F5"]; // ["#39b54a", "#FF5722", "#42A5F5"];    //green, red-orange, blue, yellow
+        paletteColour = "#161B1D"; //"#1f292e";      //"#2b394a";   //"#212121";      //"#2b394a";
+        toolbarColour = "#161B1D";      //"#344559";
         dialogColour = "#00BCD4";
-        trophicBox1Colour = "#455A64";  //"#616161";
-        trophicBox2Colour = "#37474F";  //"#424242";
-        badgeColours = ["#E91E63", "#FF9800","#FFD600", "#8BC34A","#42A5F5","#2E3192"]; //2E3192 for 3F51B5
+        trophicBox1Colour = "#536358"; //"#455A64";  //"#616161";
+        trophicBox2Colour =  "#364E4F";//"#37474F";  //"#424242";
+        badgeColours = ["red", "orange","purple", "green","blue","black"]; //2E3192 for 3F51B5
     } else {    
         //light
         backgroundColour = "#CFD8DC";   //"#BDBDBD";
@@ -458,15 +544,15 @@ function FoodWeb(){
 
         //var modalHeight = preScaledHeight;
         modal1 = document.getElementsByClassName('modal')[0];
-        modal2 = document.getElementsByClassName('modal')[1];
+        // modal2 = document.getElementsByClassName('modal')[1];
 
         modal1.style.height = preScaledHeight+'px';
-        modal2.style.height = preScaledHeight+'px';
+        // modal2.style.height = preScaledHeight+'px';
 
         var content1 = document.getElementsByClassName('content')[0];
-        var content2 = document.getElementsByClassName('content')[1];
+        // var content2 = document.getElementsByClassName('content')[1];
         content1.style.maxHeight = preScaledHeight + 'px';
-        content2.style.maxHeight = preScaledHeight + 'px';
+        // content2.style.maxHeight = preScaledHeight + 'px';
 
         //console.log( "max height: "+document.getElementsByClassName('content')[0].style.maxHeight )
     }
@@ -487,6 +573,9 @@ function FoodWeb(){
     }
     */
     //Set up toolbar buttons
+
+
+
     function setupButtons(){
         var btnHeight = 48;
         var btnWidth = 60;
@@ -966,7 +1055,7 @@ function FoodWeb(){
         document.getElementById('image2').src = validateImage( openedLine.claims[openedClaimIndex].figure2 );
         document.getElementById('image3').src = validateImage( openedLine.claims[openedClaimIndex].figure3 );
         document.getElementById('species0').src = openedLine.obj1.name+".png";
-        document.getElementById('species1').src = openedLine.obj2.name+".png";
+        document.getElementById('species1').src = openedLine.obj2.name+".png"; console.log(openedLine.claims[openedClaimIndex]);
         document.getElementById('relationship-p').innerHTML = getRelationshipText( openedLine.claims[openedClaimIndex].relationship );
         
         //var reasoningText = openedLine.claims[openedClaimIndex].reasoning;
@@ -981,7 +1070,7 @@ function FoodWeb(){
         top.userLogSC(groupInstance + 1);
 
         authorP.innerHTML = "Group "+( groupInstance + 1);
-        authorP.style.color = badgeColours[groupInstance];//"Red";
+        authorP.style.color = "white"; //badgeColours[groupInstance];//"Red";
         //number-p        
         //clientHeight includes padding
         //offsetHeight includes padding, scrollBar and borders.
