@@ -82,6 +82,7 @@ var species_names = [];
       var timeNow = (new Date).getTime();
       if ((timeNow - lastping) > TIMEOUT_INTERVAL*1000) {
         console.log('reloaded roomcast due to timeout');
+        userLogRL();
         location.reload(true);
       }
     }
@@ -134,7 +135,9 @@ $(function() {
   // var html = document.getElementsByTagName('html')[0];
   // html.style.cssText = "--color1: orange";
 
-
+window.addEventListener('unload', function(event) {
+        userLogLO();
+      });
 
   // var p = document.getElementById("tabs").parentNode;
   // var elmNewContent = document.createElement('<div id="tabs2"><ul id="resources2"></ul></div>');
@@ -561,8 +564,18 @@ function build_tab_bar() {
 // preselect=1;
   if (r.length == 2) match = 1;
   // $("#tabs").tabs("option","active", match);
-  if (r.length == 1) $("#tabs").tabs("option","active", 0);
-  if (r.length == 2) $("#tabs").tabs("option","active", 0);
+  if (r.length == 1) {$("#tabs").tabs("option","active", 0);};
+  if (r.length == 2) {$("#tabs").tabs("option","active", 0);};
+
+  // hack city
+
+                      mr = 'unknown';
+                      for(var i=0; i<resources.resourceList.length;i++){
+                        if (resources.resourceList[i].ID == r[0]) mr = resources.resourceList[i].name;
+                      };
+
+  //
+  userLogDR();
 
   $("#tabs").tabs({
                     activate: function(event ,ui){
@@ -643,6 +656,16 @@ function userLogLI(){
     nutella.net.publish('add_to_user_log',logEntry);
 }
 
+function userLogLO(){ 
+  var S = "^,^";
+  var logEntry  = 'LO' + S;
+    logEntry += portal.name + S; // portal
+    logEntry += instance.name + S; // instance
+    logEntry += activity.name; // resource 
+    nutella.net.publish('add_to_user_log',logEntry);
+}
+
+
 function userLogSR(){ 
 var S = "^,^";
 var logEntry  = 'SR' + S;
@@ -652,6 +675,17 @@ var logEntry  = 'SR' + S;
   logEntry += mr ; // resource 
   nutella.net.publish('add_to_user_log',logEntry);
 }
+
+function userLogDR(){ 
+var S = "^,^";
+var logEntry  = 'DR' + S;
+  logEntry += portal.name + S; // portal
+  logEntry += instance.name + S; // instance
+  logEntry += activity.name + S; // instance
+  logEntry += mr ; // resource 
+  nutella.net.publish('add_to_user_log',logEntry);
+}
+
 
 function userLogSL(link){ 
 var S = "^,^";
@@ -717,6 +751,25 @@ var logEntry  = 'SE' + S;
   logEntry += index ; // instance
   nutella.net.publish('add_to_user_log',logEntry);
 }
+
+function userLogRL(){ 
+var S = "^,^";
+var logEntry  = 'RL' + S;
+  logEntry += portal.name + S; // portal
+  logEntry += instance.name + S; // instance
+  logEntry += activity.name; // instance
+  nutella.net.publish('add_to_user_log',logEntry);
+}
+
+function userLogCS(){ 
+var S = "^,^";
+var logEntry  = 'CS' + S;
+  logEntry += portal.name + S; // portal
+  logEntry += instance.name + S; // instance
+  logEntry += activity.name; // instance
+  nutella.net.publish('add_to_user_log',logEntry);
+}
+
 
 // function update_design() {
 //   nutella.net.publish('set_design',design);

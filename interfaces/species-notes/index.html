@@ -243,6 +243,7 @@
 				// alert(document.getElementById('image1').src);
 			nutella.net.publish('save_claim',claim);
 			alert("Your claim has been added to the master food web");
+			top.userLogCS();
 			// zap the form
 			species0 = -1; species1 = -1;
 			document.getElementById('species0').src="qmark.png";
@@ -441,7 +442,30 @@
 		</div>
 	</div>
 
-
+<div class="hidden">
+	<script type="text/javascript">
+			var images = new Array()
+			function preload() {
+				for (i = 0; i < preload.arguments.length; i++) {
+					images[i] = new Image()
+					images[i].src = preload.arguments[i]
+				}
+			}
+			preload(
+				"species_00.png",
+				"species_01.png",
+				"species_02.png",
+				"species_03.png",
+				"species_04.png",
+				"species_05.png",
+				"species_06.png",
+				"species_07.png",
+				"species_08.png",
+				"species_09.png",
+				"species_10.png",
+			)
+	</script>
+</div>
 <!-- #wrapper {
   background-color: green; /* for visualization purposes */
   text-align: center;

@@ -249,6 +249,7 @@
           $( "#instances li" ).removeClass('ui-selected'); 
           $( "#instances li a" ).removeClass('ui-selected');
           var p = event.currentTarget;
+          top.userLogLO();
           top.instance.name = p.innerHTML;
           p = $(p);
           p.addClass('ui-selected');
