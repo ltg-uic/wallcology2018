@@ -51,8 +51,6 @@
 
 	function getLog(){ 
 		nutella.net.request('retrieve_user_log',{},function(message,from){ 
-			console.log('today:');
-			console.log(message);
 			document.getElementById('log').value = '';
 			for(var i=0; i<message.length; i++) {
 				document.getElementById('log').value += (message[i] + '\n');
