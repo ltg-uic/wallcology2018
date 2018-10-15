@@ -87,13 +87,15 @@
         font-weight: bold;
         margin: 10px 0px 0px 4px;
     }
-    .button:hover,
+    
+/*    .button:hover,
     .button:focus {
         background-color: #666666;
         text-decoration: none;
         cursor: pointer;
         color: white;
     }
+*/
     .close {
         -webkit-appearance: none;
         -webkit-border-radius: 0;    
@@ -332,13 +334,13 @@
             <tr style="background-color:#558C83;">
                 <td align=center  style="font-size:180%;" class="table-title">Evidence</td>
                 <td align=center >
-                    <img onClick="blowup(this.id);" id="image1" src="qmark.png" height=100 width=100 /><br><input hidden id="abc1" type="file" accept="image/*" onchange="loadFile1(event)"><button class="button" onClick="document.getElementById('abc1').click()">Figure 1</button>
+                    <img onClick="blowup(this.id);" id="image1" src="qmark.png" height=100 width=100 /><br><input hidden id="abc1" type="file" accept="image/*" onchange="loadFile1(event)"><button disabled class="button" onClick="document.getElementById('abc1').click()">Figure 1</button>
                 </td>
                 <td align=center >
-                    <img onClick="blowup(this.id);" id="image2" src="qmark.png" height=100 width=100 /><br><input hidden id="abc2" type="file" accept="image/*" onchange="loadFile2(event)"><button class="button" onClick="document.getElementById('abc2').click()">Figure 2</button>
+                    <img onClick="blowup(this.id);" id="image2" src="qmark.png" height=100 width=100 /><br><input hidden id="abc2" type="file" accept="image/*" onchange="loadFile2(event)"><button disabled class="button" onClick="document.getElementById('abc2').click()">Figure 2</button>
                 </td>
                 <td align=center >
-                    <img onClick="blowup(this.id);" id="image3" src="qmark.png" height=100 width=100 /><br><input hidden id="abc3" type="file" accept="image/*" onchange="loadFile3(event)"><button class="button" onClick="document.getElementById('abc3').click()">Figure 3</button>
+                    <img onClick="blowup(this.id);" id="image3" src="qmark.png" height=100 width=100 /><br><input hidden id="abc3" type="file" accept="image/*" onchange="loadFile3(event)"><button disabled class="button" onClick="document.getElementById('abc3').click()">Figure 3</button>
                 </td>
             </tr>
             <tr style="background-color:#558C83;">
@@ -383,7 +385,45 @@
         </div>
     </div>
         
+<!-- <div class="hidden">
+    <script type="text/javascript">
+            var images = new Array()
+            function preload() {
+                for (i = 0; i < preload.arguments.length; i++) {
+                    images[i] = new Image()
+                    images[i].src = preload.arguments[i]
+                }
+            }
+            preload(
+                "species_00.png",
+                "species_01.png",
+                "species_02.png",
+                "species_03.png",
+                "species_04.png",
+                "species_05.png",
+                "species_06.png",
+                "species_07.png",
+                "species_08.png",
+                "species_09.png",
+                "species_10.png",
+                "species_00_grey.png",
+                "species_01_grey.png",
+                "species_02_grey.png",
+                "species_03_grey.png",
+                "species_04_grey.png",
+                "species_05_grey.png",
+                "species_06_grey.png",
+                "species_07_grey.png",
+                "species_08_grey.png",
+                "species_09_grey.png",
+                "species_10_grey.png",
+                "remove.png",
+                "qmark.png"
 
+            )
+    </script>
+</div>
+ -->
 
 
 <!--     <div style="background-color:transparent;" id="image-layer" class="modal2">

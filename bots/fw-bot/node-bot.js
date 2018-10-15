@@ -93,7 +93,7 @@ mfw.load(function(){
 
 
 
-        nutella.net.subscribe('save_claim',function(m,from){ console.log(m);
+        nutella.net.subscribe('save_claim',function(m,from){ 
             var message = m;
             var d = new Date();
             message.timestamp = d.getTime();
@@ -133,6 +133,29 @@ mfw.load(function(){
                 };
             };
         });
+
+        nutella.net.handle_requests('fetch_one_claim',function (message,from) {
+//          var portal = message.portal; 
+            var instance = message.instance;
+            var first = message.first;
+            var second = message.second;
+            var thisClaim;
+            console.log ('testing fetch_one_claim');
+            console.log (message);
+            for (var i=claims.data.length-1; i>=0; i--){
+                thisClaim = claims.data[i];
+                if (thisClaim.instance == instance && thisClaim.source == first && thisClaim.destination == second){
+                    console.log(thisClaim);
+                    return (thisClaim);
+                }
+            }
+
+            return ({});
+
+        });
+
+
+
 
         nutella.net.handle_requests('get_mfw_and_claims',function (message,from) {
             var c = [];

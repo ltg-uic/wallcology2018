@@ -79,22 +79,23 @@ body {
 
 .modal {
     display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
+    position: absolute; /* Stay in place */
     z-index: 2; /* Sit on top */
     padding-top: 20px; /* Location of the box */
-    left: 0;
+    left: 400px;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+/*    width: 100%; /* Full width */
+/*    height: 100%; /* Full height */
+/*    overflow: auto; /* Enable scroll if needed */
+/*    background-color: rgb(0,0,0); /* Fallback color */
+/*    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
 /* Modal Content */
 .modal-content {
-    position: relative;
-    background-color: rgb(256,256,256); 
+ /*   position: relative;*/
+/*    background-color: black; */
+/*    background-color: rgb(256,256,256); */
     margin: auto;
     padding: 0;
     border: 1px solid #888;

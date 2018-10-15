@@ -135,9 +135,6 @@ $(function() {
   // var html = document.getElementsByTagName('html')[0];
   // html.style.cssText = "--color1: orange";
 
-window.addEventListener('unload', function(event) {
-        userLogLO();
-      });
 
   // var p = document.getElementById("tabs").parentNode;
   // var elmNewContent = document.createElement('<div id="tabs2"><ul id="resources2"></ul></div>');
@@ -196,6 +193,7 @@ nutella.net.request('get_cluster_info',query_parameters.run_id, function(message
     location.replace(str);
   }
 
+  
 
 
   // //grab all the configuration data
@@ -229,6 +227,9 @@ nutella.net.request('get_cluster_info',query_parameters.run_id, function(message
                   nutella.net.request('get_unitname',{},function(message,from){
                     unitname = message; 
 
+                    window.addEventListener('unload', function(event) {
+                            userLogLO();
+                          });
 
 
                     // portal specified in URL? else default to designer.
@@ -268,6 +269,7 @@ nutella.net.request('get_cluster_info',query_parameters.run_id, function(message
                     // }
 
                     // legitimate portal, access privileges confirmed
+
 
                     portal = {ID: p[0].ID, name: p[0].name, type: p[0].type};
 
