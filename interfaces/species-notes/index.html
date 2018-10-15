@@ -299,6 +299,9 @@
 				document.getElementById('species0').src = (species<10) ? "species_0" + species + ".png" : "species_10.png";
 				if (!veggie(species0)) {
 					build_relationship_menu(0);
+					$("#species1").unbind("click");
+					$("#species1").attr('src',"qmark.png");
+					species1=-1;
 					$("#species1").bind("click", function() {
 						if(document.getElementById('species_selector').style.display == 'block')
 							document.getElementById('species_selector').style.display = 'none';
@@ -308,10 +311,13 @@
 					});
 				} else {
 					build_relationship_menu(1);
-					if (!veggie(species1)) {
-						document.getElementById('species1').src = "qmark.png";
-						species1 = -1;
-					}
+					// if (!veggie(species1)) {
+					// 	document.getElementById('species1').src = "qmark.png";
+					// 	species1 = -1;
+					// }
+					$("#species1").unbind("click");
+					$("#species1").attr('src',"qmark.png");
+					species1 = -1;
 					$("#species1").bind("click", function() {
 						if(document.getElementById('species_selector').style.display == 'block')
 							document.getElementById('species_selector').style.display = 'none';
@@ -334,6 +340,11 @@
 
             // terrible hack in next line, subtracting 1. maybe should be 'name' instead of 'ID'
 			nutella.net.request('fetch_one_claim',{instance:top.instance.ID-1, first: species0, second: species1}, function(message,from){
+
+				if (!message.hasOwnProperty('relationship')) {
+					alert("no previous claims found for those species");
+					return;
+				}
 					console.log ('fetching one claim');
 					console.log (message);
 
