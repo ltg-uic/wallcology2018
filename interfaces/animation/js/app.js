@@ -26,6 +26,11 @@ var nutella,
  #=============================================================================*/
 
 function Start() {     
+    document.onkeypress = function (e) {
+    // use e.keyCode
+    };
+
+
 
     // instantiate the Nutella components
     initNutellaComponents();
