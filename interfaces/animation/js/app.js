@@ -73,7 +73,7 @@ function initWebPlayer() {
         width: window.innerWidth, // 960,
         height: window.innerHeight, // 600,
         params: {
-            enableDebugging: "1"
+            enableDebugging: "0"
         }
     };
 
