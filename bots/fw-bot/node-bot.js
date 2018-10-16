@@ -134,14 +134,49 @@ mfw.load(function(){
             };
         });
 
+
+        // save a claim
+
+        nutella.net.subscribe('save_temp_claim',function (message,from) {
+//          var portal = message.portal; 
+            var d = new Date();
+            var instance = message.instance;
+            var first = message.first;
+            var second = message.second;
+            var thisClaim;
+            for (var i=claims.data.length-1; i>=0; i--){
+                thisClaim = claims.data[i];
+                if (thisClaim.instance == instance && 
+                    thisClaim.source == first && 
+                    thisClaim.destination == second
+                    && thisClaim.status == 'saved'){
+                        claims.data.splice(i, 1);
+                }
+            }
+            claims.data.push({
+                instance: message.instance,
+                source: message.source,
+                relationship: message.relationship,
+                destination: message.destination,
+                reasoning: message.reasoning,
+                figure1: message.figure1,
+                figure2: message.figure2,
+                figure3: message.figure3,
+                timestamp: d.getTime(),
+                status: 'saved'
+            });
+            claims.save();
+
+        });
+
+
+
         nutella.net.handle_requests('fetch_one_claim',function (message,from) {
 //          var portal = message.portal; 
             var instance = message.instance;
             var first = message.first;
             var second = message.second;
             var thisClaim;
-            console.log ('testing fetch_one_claim');
-            console.log (message);
             for (var i=claims.data.length-1; i>=0; i--){
                 thisClaim = claims.data[i];
                 if (thisClaim.instance == instance && thisClaim.source == first && thisClaim.destination == second){

@@ -332,6 +332,7 @@
 			document.getElementById('species_selector').style.display = 'none';
 		}
 
+
 		function fetch_it() {
 			if (species0 == -1 || species1 == -1) {
                 alert ('select two species, then click on "Retrieve Claim" to retrieve your last submission about this relationship (if any)');
@@ -342,7 +343,7 @@
 			nutella.net.request('fetch_one_claim',{instance:top.instance.ID-1, first: species0, second: species1}, function(message,from){
 
 				if (!message.hasOwnProperty('relationship')) {
-					alert("no previous claims found for those species");
+					alert("No previous claims found for those species.");
 					return;
 				}
 					console.log ('fetching one claim');
@@ -368,13 +369,40 @@
 		}
 
 
+		function save_it() {
+			var e = document.getElementById("relationship");
+			var value = e.options[e.selectedIndex].value;
+			var text = e.options[e.selectedIndex].text;
+			if (species0 == -1 || species1 == -1) { alert ('Please select both species.'); return; };
+			// if (document.getElementById('text2').value == "") { alert ('Please provide your reasoning'); return; };
+			if (text == "relationship") { alert ('Please specify a relationship between species.'); return; };
+
+			var claim = {
+					instance: top.instance.name-1, 
+					source: species0, 
+					relationship: text.trim(), 
+					destination: species1,
+					reasoning: document.getElementById('text2').value,
+					figure1: document.getElementById('image1').src,
+					figure2: document.getElementById('image2').src,
+					figure3: document.getElementById('image3').src
+				};
+				// alert(document.getElementById('image1').src);
+			nutella.net.publish('save_temp_claim',claim);
+			alert("Your claim has been saved. It has not been submitted to the master food web.");
+			// top.userLogCS();
+			// zap the form
+		}
+
+
+
 		function send_it() {
 			var e = document.getElementById("relationship");
 			var value = e.options[e.selectedIndex].value;
 			var text = e.options[e.selectedIndex].text;
-			if (species0 == -1 || species1 == -1) { alert ('Please select both species'); return; };
-			if (document.getElementById('text2').value == "") { alert ('Please provide your reasoning'); return; };
-			if (text == "relationship") { alert ('Please select the relationship between species'); return; };
+			if (species0 == -1 || species1 == -1) { alert ('Please select both species.'); return; };
+			if (document.getElementById('text2').value == "") { alert ('Please provide your reasoning.'); return; };
+			if (text == "relationship") { alert ('Please specify a relationship between species.'); return; };
 
 			var claim = {
 					instance: top.instance.name-1, 
@@ -565,9 +593,10 @@
 		    	</td>
 		    </tr>
 		    <tr style="background-color:#558C83;">
-		    	<td colspan=4 style="text-align:right;">
+		    	<td colspan=4 style="text-align:center;">
 		    		<button style="float:left;margin-bottom: 20px;" class="button" onclick="fetch_it();">Retrieve Claim</button>
-		    		<button style="margin-bottom: 20px;" class="button" onclick="send_it();">Submit Claim</button>
+		    		<button style="margin-bottom: 20px;" class="button" onclick="save_it();">Save Claim</button>
+		    		<button style="float:right;margin-bottom: 20px;" class="button" onclick="send_it();">Submit Claim</button>
 		    	</td>
 		    </tr>
 		</table>
