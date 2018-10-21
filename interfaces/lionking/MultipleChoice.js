@@ -6,7 +6,7 @@ function MultipleChoice(n, cH, cW, c, sp, num, type, colour, heading, text){
 	var accentColour = "#008b8b"; //dark cyan //"#00BCD4";
 	var accentColourDark = "#008b8b";//"#0097A7";
 	var headingText = heading;
-	var lineHeight = 18;
+	var lineHeight = 20;
 	var styleMarker = '§';
 	// table code style --> font style
 	var styleCodeToStyle = {
@@ -165,14 +165,14 @@ function MultipleChoice(n, cH, cW, c, sp, num, type, colour, heading, text){
 			var testWidth = metrics.width;
 			if (testWidth > maxWidth && n > 0) {
 				//context.fillText(line, x, y);
-				drawStyledText(context, line, x, y,'Roboto', 14);
+				drawStyledText(context, line, x, y,'Roboto', 16);
 				line = words[n] + ' ';
 				y += lineHeight;
 			} else {
 				line = testLine;
 			}
 		}
-		drawStyledText(context, line, x, y,'Roboto', 14);
+		drawStyledText(context, line, x, y,'Roboto', 16);
 		//context.fillText(line, x, y);
 		return y;
 	}
@@ -347,21 +347,21 @@ function MultipleChoice(n, cH, cW, c, sp, num, type, colour, heading, text){
 	    this.context.fillStyle = "#FFFFFF";
 	    this.context.fillText(headingText, this.x + headingXoffset, this.y + headingYoffset);
 	    //prompt text
-	   	this.context.font = "10pt 'Roboto'";
+	   	this.context.font = "14pt 'Roboto'";
 	    this.context.fillStyle = "black";
 	    //var textY = wrapText(this.context, textblock[0], this.x + headingXoffset, this.y + marginTop + paddingY, maxWidth, lineHeight);
 	    //var textY2 = wrapText(this.context, textblock[1], this.x + headingXoffset, textY+lineHeight*2, maxWidth, lineHeight);
 	    var textY = wrapText(this.context, textblock[0], prompt.x, prompt.y, maxWidth, lineHeight);
 	    var textY2 = wrapText(this.context, textblock[1], prompt.x, textY+lineHeight*2, maxWidth, lineHeight);
 	    //graph
-	    this.context.font = "500 12pt 'Roboto'";
+	    this.context.font = "500 14pt 'Roboto'";
 	    this.context.fillStyle = accentColourDark;
 	    this.context.fillText("Goes up", upX, this.y+marginTop);
 	    this.context.fillText("Goes down", downX, this.y+marginTop);
 	    this.context.fillText("Stays the same", sameX, this.y+marginTop);
 	    //this.width - graphSetWidth + padding + iconWidth + padding + graphWidth + padding
 	    //this.width - graphSetWidth + padding + iconWidth + 2*(padding + graphWidth) + padding
-	    this.context.font = "8pt 'Roboto'";
+	    this.context.font = "12pt 'Roboto'";
 	    this.context.textAlign = "right";
 	    this.context.fillStyle = this.colour; //"#666666";
 	    this.context.fillText(this.message, btnX-padding, btnY);

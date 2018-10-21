@@ -3,8 +3,8 @@ function Prompt(context, x, y, cw, ch, l, bg){
 	var canvasH = ch;
 	this.maxWidth = cw - x - 400 - 10;	//400 as size of graphs	//10 = padding
 
-	var lineHeight = 18;
-	var breakHeight = 25;
+	var lineHeight = 22; //18;
+	var breakHeight = 30; //25;
 	var styleMarker = '§';
 	// table code style --> font style
 	var styleCodeToStyle = {
@@ -16,38 +16,58 @@ function Prompt(context, x, y, cw, ch, l, bg){
 
 	var promptsList = [
 	   	{level:1,
-		instruction:"Drag the species into the work area to get started.",
-		connection:"You've created a food chain: §bLions eat zebras§r.<br>When this happens, the zebra gives energy to the lion.<br>Right now, the ‘population over time’ graphs (on the right) show that populations are stable.<br>Based on the food chain, what do you think happens to the §bzebra§r population if the §blion§r population goes §bup§r?<br>Click the 'up' button above the lion to make a prediction and find out.",
-		continue1:"What if the §bzebra§r population goes §bup§r? What do you think happens to the §blion§r population?<br>Click the 'up' button above the zebra to make a prediction and find out.",
-		continue2:"Now we’re going to look at populations going §bdown§r.<br>If the §blion§r population goes §bdown§r, what happens to the zebra population?<br>Click the 'down' button below the lion to make a prediction and find out.",
-		continue3:"What happens to the §blion§r population if the §bzebra§r population goes down?<br>Click the 'down' button below the zebra to make a prediction and find out.",
-		continue4:"You've completed the first level! Click \u2192 (on the screen's lower left) to move on."
+		instruction:"Welcome to Level 1. Drag the species into the work area to get started.",
+		connection:"You've created a food chain: §bLions eat zebras§r.<br>When this happens, the zebra gives energy to the lion.<br>Right now, the ‘population over time’ graphs (on the right) show that populations are stable.<br>Based on the food chain, what do you think happens to the §bzebra§r (prey) population if the §blion§r (predator) population goes §bup§r?<br>Click the 'up' button above the lion to make a prediction and find out.",
+		continue1:"This is a direct predator-prey relationship. What if the §bzebra§r (prey) population goes §bup§r? What do you think happens to the §blion§r (predator) population?<br>Click the 'up' button above the zebra to make a prediction and find out.",
+		continue2:"Now we’re going to look at what happens when species populations go §bdown§r.<br>If the §blion§r (predator) population goes §bdown§r, what happens to the zebra (prey) population?<br>Click the 'down' button below the lion to make a prediction and find out.",
+		continue3:"What happens to the §blion§r population if the §bzebra§r (prey) population goes down?<br>Click the 'down' button below the zebra to make a prediction and find out.",
+		continue4:"You've completed the first level! Click \u2192 (on the screen's lower left) to move on to the next level."
 		},
-		/*{level:2,
-		instruction:"Earlier you created a food chain. Here you'll be creating a §bPopulation Interaction Web§r.<br>Drag the species into the work area to get started.",
-		connection:"In a §bPopulation Interaction Web§r, each relationship is described by a pair of arrows.<br>An arrow with a §b+§r sign means that when one species’ population goes §bup§r, the other goes §bup§r (+: if X goes up \u2192 Y goes up).<br>A §b\u2013§r sign means the opposite. When one species’ population goes §bup§r, the other species’ population goes §bdown§r (–: if X goes up \u2192 Y goes down).<br>Based on this representation, what do you think happens to the §bzebra§r population when the §blion§r population goes §bup§r?<br>Click the 'up' button above the lion to make a prediction and find out.",
-		continue1:"Did you notice that the §b\u2013§r sign on the arrow going from the §blion§r to the §bzebra§r shows their population relationship?<br>This §bopposite§r relationship directly translates to:<br>'When the lion population goes §bup§r, the zebra population goes §bdown§r'<br>What happens when you §bincrease§r the population of §bzebras§r?<br>Click the 'up' button above the zebra to make a prediction and find out.",
-		continue2:"The §b+§r sign on the arrow going from the §bzebra§r to the §blion§r describes the §bsame§r relationship, directly translating to:<br>When the zebra population goes §bup§r, the lion population also goes §bup§r.<br>A pair of +/\u2013 arrows represents a prey/predator or producer/consumer relationship.<br>Now let’s look at populations going §bdown§r.<br>Click the 'down' button below the §blion§r to §bdecrease§r the its population.",
-		continue3:"Since the arrow going from the §blion§r to the §bzebra§r has a §b\u2013§r sign, it means that:<br>‘When the population of lion goes §bup§r, the zebra population goes §bdown§r’<br>With this §bopposite§r relationship, it also means that:<br>‘When the lion population goes §bdown§r, the zebra population goes §bup§r’<br>Now, what do you think happens to the §bzebra§r population when the §blion§r population goes §bdown§r?<br>Click the 'down' button below the zebra to make a prediction and find out.",
-		continue4:"You've now learned the basics about §bPopulation Interaction Webs§r. Next, you will create more complex relationships with three and (later) four species<br>Click \u2192 to continue."
-		},*/
 		{level:2,
-		instruction:"There's a new species.<br>How do they relate to one another? And what does it mean when one species’ population changes?<br>Drag the species into the work area to start.",
-		connection:"Click on the ‘up’ and ‘down’ buttons to make changes and predict the species’ populations.",
-		continue1:"",
-		continue2:"Good Job! You’ve changed and predicted all of the species’ populations. Click \u2192 to continue."
+		instruction:"This is Level 2. Earlier you created a food chain and looked at predator and prey relationships. Here, you'll be examining §bcompetition§r relationships in an ecosystem.<br>Drag the species into the work area to get started.",
+		connection:"Grass and acacia trees compete for space.<br>Click the 'up' button above the grass to make a prediction and find out what happens to the acacia tree population when the population of grass increases.",
+		continue1:"When the population of grass goes up, the population of acacia trees go down. This is a direct competition relationship. Now, what happens when you §bincrease§r the population of §bacacia trees§r?<br>Click the 'up' button above the acacia tree to make a prediction and find out.",
+		continue2:"Now let’s look at what happens when populations §bdecrease§r.<br>Click the 'down' button below the §bgrass§r to §bdecrease§r the its population.",
+		continue3:"What do you think happens to the §bacacia tree§r population when the §bgrass§r population goes §bdown§r?<br>Click the 'down' button below the acacia tree to make a prediction and find out.",
+		continue4:"You've completed level 2. Next, you will create more complex relationships with three and (later) four species<br>Click \u2192 to continue."
 		},
 		{level:3,
-		instruction:"There's four species now: lion, zebra, grass and the acacia tree. Drag the species into the work area to start.",
-		connection:"There a different kind of relationship in this food web. Pay careful attention to the lines to find it.<br>Continue changing and predicting all of the species’ populations in the food web. You’ll be creating many more in the weeks to come.",
-		//continue1:"Level 3 complete, click \u2192 to continue."
-		continue1:"Congratulations, You’re done! Feel free go back and try them again if you like."
-		}/*,		
+		instruction:"This is Level 3, where we will look at §bindirect§r relationships.<br>Drag the species into the work area to start.",
+		connection:"Lions eat zebras and zebras eat grass. Click on the ‘up’ button above the lion to predict what happens to the zebra and grass populations.",
+		continue1:"When one level of the trophic system is affected, all of the trophic levels below them are also affected. This is called a trophic cascade. They are powerful indirect interactions that can control entire ecosystems. What happens if the §bgrass§r (producer) population goes §bup§r? <br>Click the 'up' button above the grass to make a prediction and find out.",
+		continue2:"Now we’re going to look at what happens when species populations §bdecrease§r.<br>If the §blion§r (predator) population goes §bdown§r, what happens?<br>Click the 'down' button below the lion to make a prediction and find out.",
+		continue3:"What happens to the §blion§r population if the §bgrass§r population goes down?<br>Click the 'down' button below the grass to make a prediction and find out.",
+		continue4:"Great work so far! Click \u2192 to continue."
+		},
 		{level:4,
-		instruction:"There's five species now: lion, zebra, giraffe, grass and the acacia tree. Drag the species into the work area to start.",
-		connection:"",
-		continue1:"Congratulations, You’re done! Feel free go back and try them again if you like."
-		}*/
+		instruction:"You've reached Level 4. There are three species: lion, zebra, and leopard. Drag the species into the work area to start.",
+		connection:"Both lions and leopards prey on zebras. Click on the ‘up’ button above the lion to predict what happens to the zebra and leopard populations.",
+		continue1:"When two species share a common prey, it is also called §bresource competition§r. What happens if the §bleopard§r population goes §bup§r? <br>Click the 'up' button above the leopard to make a prediction and find out.",
+		continue2:"If the §blion§r population goes §bdown§r, what happens to the leopard population?<br>Click the 'down' button below the lion to make a prediction and find out.",
+		continue3:"Now, if the §bleopard§r population goes §bdown§r, what happens to the lion population?<br>Click the 'down' button below the leopard to make a prediction and find out.",
+		continue4:"Level 4 is complete! Click \u2192 to continue."
+		},		
+		{level:5,
+		instruction:"There are three species in Level 5: lion, zebra, and giraffe. Drag the species into the work area to start.",
+		connection:"Lions prey on both zebras and giraffes. Click on the ‘up’ button above the zebra to predict what happens to the giraffe population.",
+		continue1:"When two species share a common predator, it is also called §bapparent competition§r. What do you think happens if the §bgiraffe§r population goes §bup§r? <br>Click the 'up' button above the giraffe to make a prediction and find out.",
+		continue2:"If the §bzebra§r population goes §bdown§r, what happens to the giraffe population?<br>Click the 'down' button below the zebra to make a prediction and find out.",
+		continue3:"Now, if the §bgiraffe§r population goes §bdown§r, what happens to the zebra population?<br>Click the 'down' button below the leopard to make a prediction and find out.",
+		continue4:"We've looked at a few different types of population effects so far: direct predator-prey, direct competition, trophic cascade, resource competition, and apparent competition. Next we'll look at indirect mutualism. Click \u2192 to continue."
+		},
+		{level:6,
+		instruction:"This is Level 6. There are four species now: zebra, giraffe, grass and the acacia tree. Drag the species into the work area to start.",
+		connection:"Zebras eat grass and giraffes eat the leaves on acacia trees. We also know that grass and acacia trees compete for space. How do they affect one another? Click on the ‘up’ button above the zebra to predict what happens.",
+		continue1:"When two species have different prey that compete with each other, it is also called §bindirect mutualism§r. What do you think happens if the §bgiraffe§r population goes §bup§r? <br>Click the 'up' button above the giraffe to make a prediction and find out.",
+		continue2:"If the §bzebra§r population goes §bdown§r, what happens to the giraffe population?<br>Click the 'down' button below the zebra to make a prediction and find out.",
+		continue3:"Now, if the §bgiraffe§r population goes §bdown§r, what happens to the zebra population?<br>Click the 'down' button below the leopard to make a prediction and find out.",
+		continue4:"You're almost done! Click \u2192 to continue."
+		},
+		{level:7,
+		instruction:"This is Level 7. There are five species now: lion, zebra, giraffe, grass and the acacia tree. Drag the species into the work area and try creating more complex food webs.",
+		connection:"Continue changing and predicting all of the species’ populations in the food web.",
+		continue1:"When you've changed each of the species’ populations and correctly predicted all of the populations changes in the food web, congratulations, you’re done! Keep exploring until you're confident about your predictions. Feel free go back and try previous levels again if you like."
+		}
 	];
 
 	this.level = l;
@@ -201,12 +221,12 @@ function Prompt(context, x, y, cw, ch, l, bg){
 		this.ctx.shadowBlur=0;
 		this.ctx.shadowOffsetX = 0;
 		this.ctx.shadowOffsetY = 0
-		this.ctx.font = "300 16pt 'Roboto'";
+		this.ctx.font = "300 18pt 'Roboto'";
 		this.ctx.textAlign = "left";
 		this.ctx.textBaseline = "top";
 		this.ctx.fillStyle = textColour; "black"; //"#FFFFFF";
 		//wrapText(this.ctx, this.message, this.x, this.y, maxWidth, lineHeight);
-		drawStyledBreakedWrappedText( this.ctx, this.message, this.x, this.y, 'Roboto', 16, this.maxWidth );
+		drawStyledBreakedWrappedText( this.ctx, this.message, this.x, this.y, 'Roboto', 18, this.maxWidth );
 		//this.ctx.fillText(this.message, this.x, this.y);
 	}
 }

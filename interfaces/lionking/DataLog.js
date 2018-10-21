@@ -2,8 +2,8 @@ function DataLog( n, app, portal, instance, mode ){
 	this.nutella = n;
 	this.app = app;
 	//this.group = group;
-	this.portal = portal;
-	this.instance = instance;
+	this.portal = top.portal.name; // hack for wc 2018
+	this.instance = top.instance.name; // hack for wc 2018
 	this.mode = mode;
 	this.destination;
 	this.sentData = [];

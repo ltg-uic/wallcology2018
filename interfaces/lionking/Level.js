@@ -64,10 +64,10 @@ function Level(n,c,cH){
 		if( this.num <= 1 ){
 			this.backBtn.active = false;
 			this.nextBtn.active = true;
-		} else if( this.num > 1 && this.num <= 2 ){
+		} else if( this.num > 1 && this.num <= 6 ){
 			this.backBtn.active = true;
 			this.nextBtn.active = true;
-		} else if ( this.num >= 3){
+		} else if ( this.num >= 7){
 			this.backBtn.active = true;
 			this.nextBtn.active = false;
 		}	

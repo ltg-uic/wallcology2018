@@ -5,7 +5,7 @@ function FoodWeb(){
     var fullscreen = false;
     var background = "dark"; //light or dark
     var app = "lion king";
-    this.versionID = "20171002-2030"
+    this.versionID = "20181017-2359"
     var portal;
     var instance;
 
@@ -80,11 +80,15 @@ function FoodWeb(){
         ];*/
     var levels = [
         [{name:"lion", height:100, width:100, up: true, down: false},{name:"zebra", height:100, width:64, up: false, down: false}], 
-        [{name:"lion", height:100, width:100, up: true, down: true},{name:"zebra", height:100, width:64, up: true, down: true},{name:"leopard", height:100, width:100, up: true, down: true}],
-        [{name:"lion", height:100, width:100, up: true, down: true},{name:"zebra", height:100, width:64, up: true, down: true},{name:"grass", height:100, width:100, up: true, down: true},{name:"tree", height:100, width:125, up: true, down: true}]
+        [{name:"grass", height:100, width:100, up: true, down: false},{name:"tree", height:100, width:100, up: false, down: false}], 
+        [{name:"lion", height:100, width:100, up: true, down: false},{name:"zebra", height:100, width:64, up: false, down: false}, {name:"grass", height:100, width:100, up: false, down: false}], 
+        [{name:"lion", height:100, width:100, up: true, down: false},{name:"zebra", height:100, width:64, up: false, down: false},{name:"leopard", height:100, width:100, up: false, down: false}],
+        [{name:"zebra", height:100, width:64, up: true, down: false},{name:"giraffe", height:100, width:100, up: false, down: false},{name:"lion", height:100, width:100, up: false, down: false}],
+        [{name:"zebra", height:100, width:64, up: true, down: false},{name:"giraffe", height:100, width:100, up: false, down: false},{name:"grass", height:100, width:100, up: false, down: false},{name:"tree", height:100, width:100, up: false, down: false}],
+        [{name:"lion", height:100, width:100, up: true, down: true},{name:"zebra", height:100, width:64, up: true, down: true},{name:"leopard", height:100, width:100, up: true, down: true},{name:"grass", height:100, width:100, up: true, down: true},{name:"tree", height:100, width:125, up: true, down: true}]
         ];
 
-    var level;;
+    var level;
     var obj = [];
     var connections = [];
     var graphs = [];
@@ -92,6 +96,9 @@ function FoodWeb(){
     var minusButtons = [];
     var multipleChoice = [];
     var data;
+
+    var allSpeciesActive = false;
+    var buttonsVisible = false;
 
     onResizeWindow("init");
     loadColours( background );
@@ -147,33 +154,54 @@ function FoodWeb(){
         displayList.addChild(prompt);
         setTimeout(draw, 500);
     }
-    function setupBstate(){
-        displayList.removeChild( plusButtons[0] );
-        var tempBtn = new ActionButton(ctx, obj[1].name, "plus", buttonColour, shadowColour, backgroundColour, obj[1].width, obj[1].height );
+    function setupBstate(before, after){
+        //changed 1 to after
+        //changed 0 to before
+        var b = before;
+        var a = after;
+        displayList.removeChild( plusButtons[b] );
+        //need to remove plusButton from array??
+
+        var tempBtn = new ActionButton(ctx, obj[a].name, "plus", buttonColour, shadowColour, backgroundColour, obj[a].width, obj[a].height );
         tempBtn.index = 1;
-        tempBtn.updateXY( obj[1].x, obj[1].y );
+        tempBtn.updateXY( obj[a].x, obj[a].y );
         displayList.addChild(tempBtn);
+        //tempBtn.active = false;
         plusButtons.push( tempBtn );
-        endMove( obj[1].x, obj[1].y, false);
+        endMove( obj[a].x, obj[a].y, false);
         //console.log("connections: "+connections.length);
     }
-    function setupCstate(){
-        displayList.removeChild( plusButtons[1] );
-        var tempBtn = new ActionButton(ctx, obj[0].name, "minus", buttonColour, shadowColour, backgroundColour, obj[0].width, obj[0].height );
+    function setupCstate(before, after){
+        //changed 0 to after
+        //changed 1 to before
+        console.log("plusButtons.length: "+plusButtons.length+", before: "+before);
+        var b = before;
+        var a = after;
+        displayList.removeChild( plusButtons[b] );
+        //need to remove plusButton from array??
+
+        var tempBtn = new ActionButton(ctx, obj[a].name, "minus", buttonColour, shadowColour, backgroundColour, obj[a].width, obj[a].height );
         tempBtn.index = 0;
-        tempBtn.updateXY( obj[0].x, obj[0].y );
+        tempBtn.updateXY( obj[a].x, obj[a].y );
         displayList.addChild(tempBtn);
         minusButtons.push( tempBtn );
-        endMove( obj[0].x, obj[0].y, false);
+        endMove( obj[a].x, obj[a].y, false);
     }
-    function setupDstate(){
-        displayList.removeChild( minusButtons[0] );
-        var tempBtn = new ActionButton(ctx, obj[1].name, "minus", buttonColour, shadowColour, backgroundColour, obj[1].width, obj[1].height );
+    function setupDstate(before, after){
+        //changed 1 to after
+        //changed 0 to before
+        console.log("plusButtons.length: "+minusButtons.length+", before: "+before);
+        var b = before;
+        var a = after;
+        displayList.removeChild( minusButtons[b] );
+        //need to remove plusButton from array??
+
+        var tempBtn = new ActionButton(ctx, obj[a].name, "minus", buttonColour, shadowColour, backgroundColour, obj[a].width, obj[a].height );
         tempBtn.index = 1;
-        tempBtn.updateXY( obj[1].x, obj[1].y );
+        tempBtn.updateXY( obj[a].x, obj[a].y );
         displayList.addChild(tempBtn);
         minusButtons.push( tempBtn );
-        endMove( obj[1].x, obj[1].y, false);
+        endMove( obj[a].x, obj[a].y, false);
     }
     function setupSpecies(){
         for(var i=0; i<speciesNames.length; i++){
@@ -200,14 +228,14 @@ function FoodWeb(){
                     var tempBtn = new ActionButton(ctx, obj[i].name, t, buttonColour, shadowColour, backgroundColour, obj[i].width, obj[i].height );    
                     tempBtn.index = i;
                     tempArr.push( tempBtn );
-                    displayList.addChild(tempBtn);
+                    displayList.addChild( tempBtn );
                 }
             } else if (type == "minus"){
                 if( o.down ){
                     var tempBtn = new ActionButton(ctx, obj[i].name, t, buttonColour, shadowColour, backgroundColour, obj[i].width, obj[i].height );    
                     tempBtn.index = i;
                     tempArr.push( tempBtn );
-                    displayList.addChild(tempBtn);
+                    displayList.addChild( tempBtn );
                 }
             }
         }
@@ -240,8 +268,8 @@ function FoodWeb(){
 
         //allow for top wallcology buttons and left margin if mode is set to "deploy"
         if ( mode == "deploy" || !fullscreen ){
-            cW -= 20;
-            cH -= 30;
+            cW -= 60;
+            cH -= 140;
         }
         //console.log("window.innerHeight: "+cH+", window.innerWidth: "+cW);
         //Canvas for graphs
@@ -252,9 +280,9 @@ function FoodWeb(){
         ctx = canvas.getContext("2d");
 
         canvas.width = cW;
-        canvas.height = cH
+        canvas.height = cH;
         gcanvas.width = cW;
-        gcanvas.height = cH
+        gcanvas.height = cH;
 
         //Scaling a canvas with a backing store multipler
         scaleFactor = backingScale(ctx);  
@@ -292,7 +320,7 @@ function FoodWeb(){
                 height:canvas.height};
             level = new Level(1, ctx, oldHeight);
             data = new DataLog( nutella, app, portal, instance, mode );
-            console.log("portal: "+ portal+", instance: "+instance);
+            // console.log("portal: "+ portal+", instance: "+instance);
         } else {
             for( var j=0; j<graphs.length; j++ ){
                 var g = graphs[j];
@@ -314,6 +342,7 @@ function FoodWeb(){
     function onLevelClick(direction){
         var oldlevel = level.num;
         var newlevel;
+        allSpeciesActive = false;
         if (direction == "next"){
             newlevel = oldlevel+1;
         } else if (direction == "back"){
@@ -344,47 +373,68 @@ function FoodWeb(){
             mc = {};
             multipleChoice.splice(i, 1);
         }
-        //console.log("level.STATE: "+level.STATE);
-        if( level.num == 1 || level.num == 2 ){
+        console.log("level.num: "+ level.num+", level.STATE: "+level.STATE);
+        if( level.num == 1 || level.num == 2 || level.num == 5 || level.num == 6 ){
             var newState;
             if (level.STATE == "A"){
                 newState = "B";
-                setupBstate();
+                setupBstate(0, 1);
                 prompt.setContinuePrompt(1);
             } else if ( level.STATE == "B" ){
                 newState = "C";
-                setupCstate();
+                setupCstate(1, 0);
                 prompt.setContinuePrompt(2);
             } else if ( level.STATE == "C" ){
                 newState = "D";
-                setupDstate();
+                setupDstate(0, 1);
                 prompt.setContinuePrompt(3);
             } else if ( level.STATE == "D" ){
                 newState = "A";
-                //setupLevel1C();
-                //activate next button
                 prompt.setContinuePrompt(4);
             }
             level.STATE = newState;
-        } else if( level.num == 3 ){
+        } else if( level.num == 3 || level.num == 4 ){    //|| level.num == 3 || level.num == 4 || level.num == 5 || level.num == 6 
             var newState;
             if (level.STATE == "A"){
                 newState = "B";
+                setupBstate(0, 2);
                 prompt.setContinuePrompt(1);
-                
-            } /*else if ( level.STATE == "B" ){
-                newState = "A";
+            } else if ( level.STATE == "B" ){
+                newState = "C";
+                setupCstate(2, 0);
                 prompt.setContinuePrompt(2);
-                ////activate next button
-
+            } else if ( level.STATE == "C" ){
+                newState = "D";
+                setupDstate(0, 2);
+                prompt.setContinuePrompt(3);
+            } else if ( level.STATE == "D" ){
+                newState = "A";
+                prompt.setContinuePrompt(4);
             }
-        } else if( level.num == 4 ){
+            level.STATE = newState;
+        /*} else if( level.num == 5 ){
             var newState;
             if (level.STATE == "A"){
-                newState = "A";
+                newState = "B";
+                setupBstate(1, 2);
                 prompt.setContinuePrompt(1);
-                //activate next button  
-            }*/
+            } else if ( level.STATE == "B" ){
+                newState = "C";
+                setupCstate(2, 1);
+                prompt.setContinuePrompt(2);
+            } else if ( level.STATE == "C" ){
+                newState = "D";
+                setupDstate(1, 2);
+                prompt.setContinuePrompt(3);
+            } else if ( level.STATE == "D" ){
+                newState = "A";
+                prompt.setContinuePrompt(4);
+            }
+            level.STATE = newState;*/
+        } else if( level.num == 7 ){
+            //var newState;
+            //newState = "A";
+            prompt.setContinuePrompt(1);
         }
         //prompt.setText("When you are ready, click \u2192 to continue.");
         draw();
@@ -457,7 +507,7 @@ function FoodWeb(){
         canX = newx - canvas.offsetLeft;
         canY = newy - canvas.offsetTop;
         
-        if (dragok) {
+        if ( dragok ) {
             // get the current mouse position
             var mx = canX;
             var my = canY;
@@ -561,7 +611,7 @@ function FoodWeb(){
             obj[i].isDragging = false;
         }
         
-        if(detectHit(mx,my,activeHit)){
+        if( detectHit(mx,my,activeHit) ){
             //console.log("active");
             //deactivate up and down buttons when mc on screen
             if( multipleChoice.length == 0 ){
@@ -570,7 +620,13 @@ function FoodWeb(){
                     //console.log("mx: "+mx + ", my: " + my + ", button.x: "+plusButtons[j].x + ", button.y: " + plusButtons[j].y + ", button.width: "+plusButtons[j].width + ", button.height: "+plusButtons[j].height);
                     if( detectHit(mx,my,plusButtons[j])){
                         //console.log(obj[j].name + " button");
-                        setupPopulationChange(obj[j], j, "plus");
+                        //check button.name and grab the same object name and return object
+                        //obj[j] 
+                        console.log("plusButtons[j].name: "+plusButtons[j].name);
+                        var tempObj = getObjectByName( plusButtons[j].name ); 
+                        console.log("tempObj: " + tempObj.name);
+                        //not sure what j does
+                        setupPopulationChange( tempObj, j, "plus");
                         //handlePopulationChange(obj[j], j, "plus");
                     }
                 }
@@ -578,12 +634,13 @@ function FoodWeb(){
                     //console.log("mx: "+mx + ", my: " + my + ", button.x: "+plusButtons[j].x + ", button.y: " + plusButtons[j].y + ", button.width: "+plusButtons[j].width + ", button.height: "+plusButtons[j].height);
                     if( detectHit(mx,my,minusButtons[k])){
                         //console.log(obj[j].name + " button");
-                        setupPopulationChange(obj[k], k, "minus");
+                        var tempObj = getObjectByName( minusButtons[k].name ); 
+                        setupPopulationChange(tempObj, k, "minus");
                         //handlePopulationChange(obj[k], k, "minus");
                     }
                 }
             }
-        }else if (detectHit(mx,my,pickerHit)){
+        } else if (detectHit(mx,my,pickerHit)){
             //console.log("picker");
             setActiveProperty(pickerHit, false);
             
@@ -609,6 +666,16 @@ function FoodWeb(){
     }
 
     //FUNCTIONS
+    //Return object based on name given
+    function getObjectByName( n ){
+        var tempObj;
+        for( var i=0; i<obj.length; i++){
+            if (n == obj[i].name){
+                tempObj = obj[i];
+            }
+        }
+        return tempObj;
+    }
     //Determining a backing store multiplier
     function backingScale(context) {
         if ('devicePixelRatio' in window) {
@@ -630,13 +697,28 @@ function FoodWeb(){
     function setActiveProperty(hitObj, isActive){
         var h = hitObj;
         var b = Boolean(isActive);
+        var pb;
+        var mb;
+
         for (var i = 0; i < obj.length; i++) {
             var s = obj[i];
-            var pb = plusButtons[i];
-            var mb = minusButtons[i];
-            if(detectHit(s.x,s.y,h)){
+            //var pb = plusButtons[i];
+            //var mb = minusButtons[i];
+            if( detectHit(s.x,s.y,h) ){
                 //species active
-                //console.log(s.name + ".active: " + b);
+                console.log(s.name + ".active: " + b);
+                for ( var j=0; j < plusButtons.length; j++ ){
+                    if( s.name == plusButtons[j].name ){
+                        console.log("s.name: "+s.name+", plusButtons[j].name: "+plusButtons[j].name);
+                        pb = plusButtons[j];
+                    } 
+                }
+                for ( var k=0; k < minusButtons.length; k++ ){
+                    if( s.name == minusButtons[k].name ){
+                        console.log("s.name: "+s.name+", minusButtons[k].name: "+minusButtons[k].name);
+                        mb = minusButtons[k];
+                    } 
+                }
                 s.active = b;
                 if( pb ){
                     pb.active = b;    
@@ -660,6 +742,29 @@ function FoodWeb(){
                 activeSpeciesList.push( s );
             }
         }
+        //+++ show plus and minus buttons only if activeSpeciesList.length == obj.length && level = <=6
+        if ( level.num <= 6 ){
+            if ( obj.length == activeSpeciesList.length ){
+                allSpeciesActive = true;
+                for( var n=0; n<plusButtons.length; n++ ){
+                    plusButtons[n].active = true;
+                }
+                for( var o=0; o<minusButtons.length; o++ ){
+                    minusButtons[o].active = true;
+                }
+                //console.log("level.num: "+level.num+", plusButtons.length: "+plusButtons.length+", minusButtons.length: "+minusButtons.length);
+            } else {
+                allSpeciesActive = false;
+                for( var p=0; p<plusButtons.length; p++ ){
+                    plusButtons[p].active = false;
+                }
+                for( var q=0; q<minusButtons.length; q++ ){
+                    minusButtons[q].active = false;
+                }
+            }
+        }
+        //console.log("allSpeciesActive: "+allSpeciesActive);
+    
         //ADD CONNECTION
         //first loop runs through all the active species
         for (var j=0; j<activeSpeciesList.length; j++){
@@ -688,7 +793,9 @@ function FoodWeb(){
                             data.save("CONNECTION_MADE","level ;"+level.num+" ;object1 ;"+s1.name+" ;object2 ;"+s2.name+" ;connection ;"+tempConnection);
                             //console.log("create connection: "+tempConnection+" between "+s1.name +" and "+s2.name);
                             var line = new Line( tempConnection, s1, s2, ctx, level.num, connectType, shadowColour );
-                            prompt.setConnectionPrompt();
+                            if ( allSpeciesActive ){
+                                prompt.setConnectionPrompt();
+                            }
                             connections.push( line );
                             displayList.addChild( line );
                         }
@@ -807,17 +914,21 @@ function FoodWeb(){
         var newdata = new GraphData();
         var promptText;
         var headingText;
-                
+
+        //can temporarily stop this while debugging    
         //find out if graphs are running
-        for(var i=0; i<graphs.length; i++){
-            var graphsRunning = graphs[i].getRunning();
-            //console.log("graphs["+o+"] running: "+ graphsRunning );
-            if( graphsRunning ){
-                //write a message to let users know that graphs are running
-                prompt.setText("Populations are in flux. Wait until they are stabilized to start a new manipulation.")
-                return;
+        if ( mode == "deploy" ){
+            for(var i=0; i<graphs.length; i++){
+                var graphsRunning = graphs[i].getRunning();
+                //console.log("graphs["+o+"] running: "+ graphsRunning );
+                if( graphsRunning ){
+                    //write a message to let users know that graphs are running
+                    prompt.setText("Species populations are still changing. Wait until they are stabilized before adjusting population levels.")
+                    return;
+                }
             }
         }
+
         //find out if more than one species are on work area
         var activeObjNum = 0;
         for(var j=0; j<obj.length; j++){
@@ -854,13 +965,13 @@ function FoodWeb(){
                 prompt.setText(" ");
                 var txt = species.name
                 var titleCase = txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-                headingText = "Prediction: "+ titleCase + " goes up";
+                headingText = "What happens when: "+ titleCase + " population goes up";
                 promptText = "What happens to the population of other species if the §b"+ species.name + "§r population §bincreases§r?<br>Make your prediction and click 'run' to test your theory.";
             } else if ( type == "minus" ){
                 prompt.setText(" ");
                 var txt = species.name
                 var titleCase = txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-                headingText = "Prediction: "+ titleCase + " goes down";
+                headingText = "What happens when: "+ titleCase + " population goes down";
                 promptText = "What happens to the population of other species if the §b"+ species.name + "§r population §bdecreases§r?<br>Make your prediction and click 'run' to test your theory.";
                 //prompt.setText("What happens to the population of the other shape(s) if the " + species.name + " population decreases? (A) Goes up, (B) Goes down, (C) Stays the same. Make your selection and click 'run' to test your theory.");
             }
