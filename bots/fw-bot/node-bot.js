@@ -43,6 +43,7 @@ mfw.load(function(){
         });
 
         nutella.net.subscribe('save_mfw', function(message,from){
+            console.log('saving MFW');
             mfw.data.push(message); mfw.save();
         });
 

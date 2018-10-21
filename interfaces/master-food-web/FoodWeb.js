@@ -1,5 +1,5 @@
 //WALLCOLOGY FOOD WEB
-var READONLY = false;
+
         var image = new Image();
         image.onload = function() { 
             image.onclick = function() { 
@@ -92,7 +92,7 @@ function FoodWeb(){
     var fullscreen = false; //true;
     var app = "wallcology";
     var background = "dark";   //"light" or "dark"
-    var versionID = "20181006-1030";
+    var versionID = "20181019-2230";
     var query_parameters;
     var nutella;
     var group; //-1, 0, 1, 2, 3, 4, null
@@ -1231,7 +1231,7 @@ function FoodWeb(){
                 newY = getRandomInt( trophicBox2.y + o.height, trophicBox2.y+trophicBox2.height-o.height );                
             }
             //save position after x minutes
-            setInterval( saveFoodWeb, saveDelay );
+            // setInterval( saveFoodWeb, saveDelay );
         //not in palette --> keep original pos
         } else {
             //console.log("drawing: obj.name: "+o.name+", obj.x: "+o.x+", obj.y: "+o.y);
@@ -1506,7 +1506,7 @@ function FoodWeb(){
                 o.x = o.px;
                 o.y = o.py;
                 //save position after X minutes
-                setInterval( saveFoodWeb, saveDelay );
+                // setInterval( saveFoodWeb, saveDelay );
             }
         }
         //console.log("connections.length: "+connections.length);
