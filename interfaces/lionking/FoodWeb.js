@@ -268,7 +268,7 @@ function FoodWeb(){
 
         //allow for top wallcology buttons and left margin if mode is set to "deploy"
         if ( mode == "deploy" || !fullscreen ){
-            cW -= 60;
+            cW -= 90;
             cH -= 140;
         }
         //console.log("window.innerHeight: "+cH+", window.innerWidth: "+cW);
