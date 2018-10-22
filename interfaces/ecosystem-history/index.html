@@ -125,11 +125,19 @@
 			for (i=0; i<11; i++) {
 				document.write('<tr ');
 				if (thisSize != 1 && thisBUS != i) document.write('hidden');
-				/*&nbsp;<span style="vertical-align:middle;">' + top.species_names[i] + '</span>*/
-				document.write('><td style="padding-left:15px;" ><div class="tooltip"><img onClick="resizeMe(' + i + ');" src=' + images[i] + ' height="' + myIconHt + '" width="' + myIconHt + '"><span class="tooltiptext">'+top.species_names[i]+'</span></div></td>');
-				// document.write('<td align=left style="font-size: 90%">' + top.species_names[i] + '</td>');
 
-				document.write('<td><canvas id="myChart' + i + '" width="1200" height="' + myHt + '"></td></tr>');
+				if (thisSize == 1) {
+				/*&nbsp;<span style="vertical-align:middle;">' + top.species_names[i] + '</span>*/
+					document.write('><td style="padding-left:15px;"><div class="tooltip"><img onClick="resizeMe(' + i + ');" src=' + images[i] + ' height="' + myIconHt + '" width="' + myIconHt + '"><span class="tooltiptext">'+top.species_names[i]+'</span></div></td>');
+					document.write('<td><canvas id="myChart' + i + '" width="1200" height="' + myHt + '"></td></tr>');
+					// document.write('<td align=left style="font-size: 90%">' + top.species_names[i] + '</td>');
+				} else {
+					// alert('got here');
+					document.write('><td style="padding-left:15px;"><div class="tooltip"><img onClick="resizeMe(' + i + ');" src=' + images[i] + ' height="' + myIconHt + '" width="' + myIconHt + '"><span class="tooltiptext">'+top.species_names[i]+'</span></div></td>');
+					document.write('<td style="padding-top:15px;padding-bottom:15px;"><canvas id="myChart' + i + '" width="1200" height="' + myHt + '"></td></tr>');
+				}
+
+				
 			}
 
 		</script>
