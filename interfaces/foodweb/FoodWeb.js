@@ -209,7 +209,7 @@ function FoodWeb(){
         canvasHeight = (parent.document.body.clientHeight == 0)? 680 : parent.document.body.clientHeight;
 
         if (mode == "deploy" ){
-            canvasWidth -= 62;
+            canvasWidth -= 55;
             canvasHeight -= 135;
         }
 
