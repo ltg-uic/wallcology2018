@@ -209,8 +209,8 @@ function FoodWeb(){
         canvasHeight = (parent.document.body.clientHeight == 0)? 680 : parent.document.body.clientHeight;
 
         if (mode == "deploy" ){
-            canvasWidth -= 20;
-            canvasHeight -= 30;
+            canvasWidth -= 62;
+            canvasHeight -= 135;
         }
 
         //Canvas for drag and drop
@@ -222,11 +222,11 @@ function FoodWeb(){
         if ( fullscreen ){
             canvas.width = canvasWidth;
             canvas.height = canvasHeight;
-        } else if ( !fullscreen ){
+        } else if ( !fullscreen ){ 
             var distFromTop = 26;
             var distFromLeft = 24;
-            canvas.width = canvasWidth-distFromLeft;
-            canvas.height = canvasHeight-distFromTop;
+            canvas.width = (canvasWidth-distFromLeft)*.9;
+            canvas.height = (canvasHeight-distFromTop)*.9;
         }
         //scaling a canvas with a backing store multipler
         scaleFactor = backingScale(ctx);  
