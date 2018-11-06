@@ -31,6 +31,7 @@ function DataLog( n, app, portal, instance, mode ){
 		if ( mode == "deploy"){ 
 		    this.nutella.net.publish('save_fwe',{portal: top.portal.ID, instance: top.instance.name-1, time: t, drawing: drawing});
 		    this.nutella.net.publish(this.destination,['Portal ;'+ portal + ' ;Instance: ' + instance +' ;Time ;'+t+' ;Drawing Saved']);
+			alert('Your foodweb has been saved.');
 		} else {            
 			console.log('Group ;'+ group +' ;Time ;'+t); //+' ;FOODWEB_IMAGE ;'+ imgBase64 );
 		}
