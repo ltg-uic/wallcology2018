@@ -174,7 +174,7 @@ function FoodWeb(){
     data.save("DRAWING_INIT",versionID+"; window.innerWidth; "+preScaledWidth+"; window.innerHeight; "+preScaledHeight);//+"; savedVersionsNum ;"+savedVersionsNum+"; label ;"+label);
     //get latest saved drawing
     if ( mode == "deploy"){
-        nutella.net.request('get_fwe', {portal: portal, instance: instance}, function(message,from){
+        nutella.net.request('get_fwe', {portal: top.portal.ID, instance: top.instance.name-1}, function(message,from){
             retrieveDrawing( message ); 
             setupEventListeners();
             setTimeout( draw, 1000 );

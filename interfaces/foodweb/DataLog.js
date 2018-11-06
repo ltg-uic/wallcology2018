@@ -28,8 +28,8 @@ function DataLog( n, app, portal, instance, mode ){
 	}
 	this.saveDrawing = function( drawing, message){//, imgBase64 ){
 		var t = Timestamp(); 
-		if ( mode == "deploy"){
-		    this.nutella.net.publish('save_fwe',{portal: portal, instance: instance, time: t, drawing: drawing});
+		if ( mode == "deploy"){ 
+		    this.nutella.net.publish('save_fwe',{portal: top.portal.ID, instance: top.instance.name-1, time: t, drawing: drawing});
 		    this.nutella.net.publish(this.destination,['Portal ;'+ portal + ' ;Instance: ' + instance +' ;Time ;'+t+' ;Drawing Saved']);
 		} else {            
 			console.log('Group ;'+ group +' ;Time ;'+t); //+' ;FOODWEB_IMAGE ;'+ imgBase64 );
