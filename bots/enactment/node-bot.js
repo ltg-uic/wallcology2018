@@ -234,7 +234,7 @@ function cycleSimulation(Model,Environment,Populations) {
                 sum1 += (M('alpha',i,j) * P('resources',j)); 
         for (var k = 0; k < M('community','herbivores').length; k++) 
                 sum2 += ((M('a',i,k) * P('herbivores',k)) / (1 + M('q',k) * P('herbivores',k)));
-        exponent = (M('K',i) - sum1)/(1 + M('K',i)) - sum2;
+        exponent = M('r',i) * (M('K',i) - sum1)/(1 + M('K',i)) - sum2;
         nP('resources',i,P('resources',i) * Math.exp(exponent/2));
     }
 
