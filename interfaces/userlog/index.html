@@ -54,8 +54,8 @@
 			document.getElementById('log').value = 'Hunting for SLs performed by groups\n\n';
 			var f = [0,0,0,0,0,0];
 			for(var i=0; i<message.length; i++) {
-				if (message[i].substr(16,2) != "SL") continue
-				if (message[i].substr(21,5) == "group") continue
+				if (message[i].substr(16,2) != "SC") continue
+				if (message[i].substr(21,5) != "group") continue
 				f[Number(message[i].substr(29,1))]++
 
 				var utcSeconds = Number(message[i].substr(0,13));
