@@ -51,14 +51,14 @@
 
 	function getLog(){ 
 		nutella.net.request('retrieve_user_log',{},function(message,from){ 
-			document.getElementById('log').value = '';
+			document.getElementById('log').value = 'Hunting for SLs performed by groups\n\n';
 			for(var i=0; i<message.length; i++) {
 				if (message[i].substr(16,2) != "SL") continue
 				if (message[i].substr(21,5) != "group") continue
 
-				var utcSeconds = message[i].substr(0,13);
+				var utcSeconds = Number(message[i].substr(0,13));
 				var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
-				d.setUTCSeconds(utcSeconds);
+				d.setUTCSeconds(utcSeconds/1000);
 				document.getElementById('log').value += (d + ' ' + message[i] + '\n');
 			}
 		});
