@@ -53,7 +53,13 @@
 		nutella.net.request('retrieve_user_log',{},function(message,from){ 
 			document.getElementById('log').value = '';
 			for(var i=0; i<message.length; i++) {
-				document.getElementById('log').value += (message[i] + '\n');
+				if (message[i].substr(16,2) != "SL") continue
+				if (message[i].substr(21,5) != "group") continue
+
+				var utcSeconds = message[i].substr(0,13);
+				var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+				d.setUTCSeconds(utcSeconds);
+				document.getElementById('log').value += (d + ' ' + message[i] + '\n');
 			}
 		});
 	};
